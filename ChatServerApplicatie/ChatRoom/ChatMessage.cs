@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 namespace ChatServerApplicatie.ChatRoom {
     [Serializable]
     internal class ChatMessage {
-        string sender { get; }
-        Byte[] message { get; }
+        string Sender { get; }
+        Byte[] Message { get; }
         DateTime DateTime { get; }
         int MessageID { get; }
         
 
 
         public ChatMessage(string sender, Byte[] message) {
-            this.sender = sender;
-            this.message = message;
+            this.Sender = sender;
+            this.Message = message;
             this.DateTime = DateTime.Now;
-            this.MessageID = this.sender.GetHashCode()+this.message.GetHashCode()+DateTime.GetHashCode();
+            this.MessageID = this.Sender.GetHashCode()+this.Message.GetHashCode()+DateTime.GetHashCode();
         }
     }
 }
