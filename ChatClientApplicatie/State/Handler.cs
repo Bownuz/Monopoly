@@ -1,34 +1,42 @@
-﻿using System;
+﻿using SendableObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ChatClientApplicatie.State {
     public class Handler {
-        public event Action<string> NewDoctorMessage;
+        public event Action<string> NewMessage;
         protected bool isRunning;
         protected bool isInitialized;
-        protected string patientID;
-        protected string ergometerID;
-        protected string heartRateMonitorID;
+        protected string clientName;
+        protected string clientPassword;
+        protected string clientMessage;
         protected TcpClient tcpClient;
-        //internal DataHandler dataHandler;
 
-        internal Handler(TcpClient tcpClient, string patientID, string ergometerID, string heartRateMonitorID) {
-            NetworkStream stream = tcpClient.GetStream();
+        internal Handler(TcpClient tcpClient, string clientName, string clientPassword) {
+            //NetworkStream stream = tcpClient.GetStream();
             this.tcpClient = tcpClient;
             this.isRunning = true;
             this.isInitialized = false;
-            this.patientID = patientID;
-            this.ergometerID = ergometerID;
-            this.heartRateMonitorID = heartRateMonitorID;
+            this.clientName = clientName;
+            this.clientPassword = clientPassword;
         }
 
-        //internal void addDataHandler(DataHandler dataHandler) {
-        //    this.dataHandler = dataHandler;
-        //}
+        internal void UpdateClientInfo(string clientName, string clientPassword, Boolean createAcount) {
+            this.clientName = clientName;
+            this.clientPassword = clientPassword;
+            MessageCommunication.SendMessage(tcpClient, GetClientInfoAsJson());
+        }
+
+        internal string GetClientInfoAsJson() {
+            AccountLogIn accountLogIn = new AccountLogIn(clientName, SHA512.HashData(Encoding.UTF8.GetBytes(clientPassword)));
+            return JsonSerializer.Serialize<AccountLogIn>(accountLogIn);
+        }
 
         public void HandleThread() {
             DataProtocol protocol = new DataProtocol(this);
@@ -38,7 +46,7 @@ namespace ChatClientApplicatie.State {
                 string recievedMessage;
                 string response;
                 if ((recievedMessage = MessageCommunication.RecieveMessage(tcpClient)) != null) {
-                    NewDoctorMessage?.Invoke(recievedMessage);
+                    NewMessage?.Invoke(recievedMessage);
                     response = protocol.processInput(recievedMessage);
                     if (response != "") {
                         MessageCommunication.SendMessage(tcpClient, response);

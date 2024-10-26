@@ -12,7 +12,8 @@ namespace ChatApplicatie {
         }
 
         private void Client_Load(object sender, EventArgs e) {
-            IPAddress ipAddr = IPAddress.Parse("127.0.0.1");
+            //IPAddress ipAddr = IPAddress.Parse("127.0.0.1");
+            IPAddress ipAddr = IPAddress.Parse("localhost");
             IPEndPoint localEndPoint = new IPEndPoint(ipAddr, 6666);
 
             client = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
