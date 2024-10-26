@@ -39,17 +39,18 @@ namespace ChatClientApplicatie.State {
 
         public async Task HandleAsync() {
             DataProtocol protocol = new DataProtocol(this);
-            await Task.Run(() => ListenForMessagesAsync());
 
-            while (clientSocket.Connected) {
-                string receivedMessage = await MessageCommunication.RecieveMessage(clientSocket);
-                if (receivedMessage != null) {
-                    NewMessage?.Invoke(receivedMessage);
-                    string response = protocol.processInput(receivedMessage);
-                    if (!string.IsNullOrEmpty(response)) {
-                        await SendMessageAsync(response);
-                        if (response.Equals("Goodbye")) {
-                            clientSocket.Close();
+            using (clientSocket) {
+                while (true) {
+                    string receivedMessage = await MessageCommunication.RecieveMessage(clientSocket);
+                    if (receivedMessage != null) {
+                        NewMessage?.Invoke(receivedMessage);
+                        string response = protocol.processInput(receivedMessage);
+                        if (!string.IsNullOrEmpty(response)) {
+                            await SendMessageAsync(response);
+                            if (response.Equals("Goodbye")) {
+                                break;
+                            }
                         }
                     }
                 }
@@ -67,6 +68,7 @@ namespace ChatClientApplicatie.State {
             return JsonSerializer.Serialize<AccountLogIn>(accountLogIn);
         }
 
+        [Obsolete]
         private async Task ListenForMessagesAsync() {
             while (clientSocket.Connected) {
                 string receivedMessage = await MessageCommunication.RecieveMessage(clientSocket);
