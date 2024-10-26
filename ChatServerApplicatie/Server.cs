@@ -60,9 +60,6 @@ namespace ChatServerApplicatie {
 
                     byte[] packet = new byte[sizeMessage];
                     int bytePacket = await userSocket.ReceiveAsync(packet);
-                    Console.WriteLine(Encoding.UTF8.GetString(packet));
-                    var accountLogInTest = JsonSerializer.Deserialize<AccountLogIn>(Encoding.UTF8.GetString(packet));
-                    Console.WriteLine($"name: {accountLogInTest?.Name}, passwd: {Encoding.UTF8.GetString(accountLogInTest?.PasswdHash)}");
                 }
             }
         }
