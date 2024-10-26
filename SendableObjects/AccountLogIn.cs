@@ -5,8 +5,8 @@ using System.Text;
 namespace SendableObjects {
     [Serializable]
     public class AccountLogIn {
-        string name { get; }
-        byte[] passwdHash { get; }
+        public string name { get; }
+        public byte[] passwdHash { get; }
 
         public AccountLogIn(string name, string passwd) {
             this.name = name;
