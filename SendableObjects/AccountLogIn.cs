@@ -1,16 +1,16 @@
 ﻿using System.Runtime.Intrinsics.Arm;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace SendableObjects {
-    [Serializable]
     public class AccountLogIn {
-        string name { get; }
-        byte[] passwdHash { get; }
-
-        public AccountLogIn(string name, string passwd) {
-            this.name = name;
-            this.passwdHash = SHA512.HashData(Encoding.UTF8.GetBytes(passwd));
+        public AccountLogIn(string Name, byte[] PasswdHash) {
+            this.Name = Name;
+            this.PasswdHash = PasswdHash;
         }
+
+        public string Name { get; set; }
+        public byte[] PasswdHash { get; set; }
     }
 }
