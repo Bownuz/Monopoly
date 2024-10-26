@@ -4,19 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatClientApplicatie.State {
+namespace ChatServerApplicatie.ProtocolState {
     public class DataProtocol {
-        private State state;
+        private ProtocolState state;
 
-        public DataProtocol(Handler handler) {
-            this.state = new Login(this, handler);
+        public DataProtocol() {
+            this.state = new Login(this);
         }
-
         public String processInput(String input) {
-            return state.CheckInput(input);
+            return state.CheckUserInput(input);
         }
 
-        public void ChangeState(State newState) {
+        public void ChangeState(ProtocolState newState) {
             this.state = newState;
         }
     }

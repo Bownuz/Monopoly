@@ -1,4 +1,5 @@
-﻿using SendableObjects;
+﻿using ChatServerApplicatie.ProtocolState;
+using SendableObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,14 +53,18 @@ namespace ChatServerApplicatie {
 
         public async Task HandleUser(Socket userSocket) {
             using (userSocket) {
-                byte[] sizeIncomingPacket = new byte[4];
-
+                DataProtocol  dataProtocol = new DataProtocol();
                 while (true) {
-                    int byteSizeIncomingPacket = await userSocket.ReceiveAsync(sizeIncomingPacket);
-                    int sizeMessage = BitConverter.ToInt32(sizeIncomingPacket);
-
-                    byte[] packet = new byte[sizeMessage];
-                    int bytePacket = await userSocket.ReceiveAsync(packet);
+                    string receivedMessage = await MessageCommunication.RecieveMessage(userSocket);
+                    if (receivedMessage != null) {
+                        string response = dataProtocol.processInput(receivedMessage);
+                        if (!string.IsNullOrEmpty(response)) {
+                            await MessageCommunication.SendMessage(userSocket, response);
+                            if (response.Equals("Goodbye")) {
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }

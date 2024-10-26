@@ -15,7 +15,6 @@ namespace ChatClientApplicatie.State {
             string loginData = null;
             if (input.Equals("Send userName")) {
                 loginData = handler.GetClientInfoAsJson();
-                
             } else if (input.Equals("Username or password incorrect")) {
                 MessageBox.Show(input);
             } else if (input.Equals("This name already exists")) {
