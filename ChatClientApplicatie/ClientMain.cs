@@ -3,7 +3,7 @@ using ChatClientApplicatie;
 namespace ChatApplicatie {
     internal static class ClientMain {
         [STAThread]
-        static void Main() {
+        static async Task Main() {
 
             //ApplicationConfiguration.Initialize();
             //Application.Run(new Choose);
@@ -15,12 +15,12 @@ namespace ChatApplicatie {
 
         public static void StartGui() {
             Form mainForm = new Form();
-            SignInScreen userControl = new SignInScreen(mainForm);
+            SignInScreen signInScreen = new SignInScreen(mainForm);
 
-            userControl.Dock = DockStyle.Fill;
+            signInScreen.Dock = DockStyle.Fill;
 
             mainForm.WindowState = FormWindowState.Maximized;
-            mainForm.Controls.Add(userControl);
+            mainForm.Controls.Add(signInScreen);
             mainForm.Text = "Client Application";
             Application.Run(mainForm);
         }

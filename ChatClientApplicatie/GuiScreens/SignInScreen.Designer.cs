@@ -53,7 +53,6 @@
             UsernameLabel.Size = new Size(63, 15);
             UsernameLabel.TabIndex = 2;
             UsernameLabel.Text = "Username:";
-            UsernameLabel.Click += label1_Click;
             // 
             // PasswordLabel
             // 
@@ -82,9 +81,9 @@
             CreateAcount.TabIndex = 5;
             CreateAcount.Text = "Create Acount";
             CreateAcount.UseVisualStyleBackColor = true;
-            CreateAcount.Click += CreateAcount_Click;
+            CreateAcount.Click += CreateAcount_Click_1;
             // 
-            // UserControl1
+            // SignInScreen
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -94,7 +93,7 @@
             Controls.Add(UsernameLabel);
             Controls.Add(PasswordTextBox);
             Controls.Add(UsernameTextBox);
-            Name = "UserControl1";
+            Name = "SignInScreen";
             Size = new Size(669, 568);
             ResumeLayout(false);
             PerformLayout();
