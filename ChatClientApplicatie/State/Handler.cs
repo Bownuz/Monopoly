@@ -1,8 +1,11 @@
-﻿using System;
+﻿using SendableObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ChatClientApplicatie.State {
@@ -16,7 +19,7 @@ namespace ChatClientApplicatie.State {
         protected TcpClient tcpClient;
 
         internal Handler(TcpClient tcpClient, string clientName, string clientPassword) {
-            NetworkStream stream = tcpClient.GetStream();
+            //NetworkStream stream = tcpClient.GetStream();
             this.tcpClient = tcpClient;
             this.isRunning = true;
             this.isInitialized = false;
@@ -24,14 +27,15 @@ namespace ChatClientApplicatie.State {
             this.clientPassword = clientPassword;
         }
 
-        internal void AddClientInfo(string clientName, string clientPassword, Boolean createAcount) {
+        internal void UpdateClientInfo(string clientName, string clientPassword, Boolean createAcount) {
             this.clientName = clientName;
             this.clientPassword = clientPassword;
-            MessageCommunication.SendMessage(tcpClient, "ClientName:" + clientName + "ClientPassword:" + clientPassword + "NewAcount:" + createAcount);
+            MessageCommunication.SendMessage(tcpClient, GetClientInfoAsJson());
         }
 
-        internal string GetClientInfo() {
-            return "Clientname:" + clientName + "Clientpassword:" + clientPassword;
+        internal string GetClientInfoAsJson() {
+            AccountLogIn accountLogIn = new AccountLogIn(clientName, SHA512.HashData(Encoding.UTF8.GetBytes(clientPassword)));
+            return JsonSerializer.Serialize<AccountLogIn>(accountLogIn);
         }
 
         public void HandleThread() {

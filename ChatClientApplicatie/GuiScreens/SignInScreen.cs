@@ -43,7 +43,7 @@ namespace ChatClientApplicatie {
 
         private void SubmitButton_Click(object sender, EventArgs e) {
             if (!string.IsNullOrWhiteSpace(UsernameTextBox.Text) && !string.IsNullOrWhiteSpace(PasswordTextBox.Text)) {
-                handler.AddClientInfo(UsernameTextBox.Text, PasswordTextBox.Text, createAcount);
+                handler.UpdateClientInfo(UsernameTextBox.Text, PasswordTextBox.Text, createAcount);
             } else {
                 MessageBox.Show("You haven't filled everything in");
             }

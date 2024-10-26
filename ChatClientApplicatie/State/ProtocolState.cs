@@ -13,12 +13,15 @@ namespace ChatClientApplicatie.State {
         public override string CheckInput(string input) {
 
             string loginData = null;
-            if (input.Equals("Send data")) {
-                loginData = handler.GetClientInfo();
-
+            if (input.Equals("Send userName")) {
+                loginData = handler.GetClientInfoAsJson();
+                
+            } else if (input.Equals("Username or password incorrect")) {
+                MessageBox.Show(input);
+            } else if (input.Equals("This name already exists")) {
+                MessageBox.Show(input);
+            } else if (input.Equals("Welcome")) {
                 protocol.ChangeState(new SearchLobby(protocol, handler));
-            } else {
-                MessageBox.Show("Client isn't connected to the server");
             }
             return loginData;
         }
