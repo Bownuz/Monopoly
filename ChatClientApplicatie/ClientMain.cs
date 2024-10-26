@@ -10,10 +10,10 @@ namespace ChatApplicatie {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            StartGui();
+            await StartGui();
         }
 
-        public static void StartGui() {
+        public static async Task StartGui() {
             Form mainForm = new Form();
             SignInScreen signInScreen = new SignInScreen(mainForm);
 
@@ -22,7 +22,10 @@ namespace ChatApplicatie {
             mainForm.WindowState = FormWindowState.Maximized;
             mainForm.Controls.Add(signInScreen);
             mainForm.Text = "Client Application";
-            Application.Run(mainForm);
+            Task.Run(() => {
+                Application.Run(mainForm);
+            });
+
         }
     }
 }
