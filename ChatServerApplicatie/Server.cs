@@ -36,7 +36,13 @@ namespace ChatServerApplicatie {
 
                     var userTask = HandleUser(NewUserConnection);
                     ActiveConnections.Add(userTask);
-                    await userTask.ContinueWith(t => { ActiveConnections.Remove(userTask); });
+                    await userTask.ContinueWith(t => { 
+                        ActiveConnections.Remove(userTask);
+                        if (t.IsFaulted) {
+                            Console.WriteLine(t.Exception.InnerException.Message);
+                            Console.WriteLine(t.Exception.InnerException.StackTrace);
+                        }
+                    });
                 }
             }
             catch (Exception ex) {
@@ -54,9 +60,9 @@ namespace ChatServerApplicatie {
 
                     byte[] packet = new byte[sizeMessage];
                     int bytePacket = await userSocket.ReceiveAsync(packet);
-                    Console.WriteLine(packet.Length);
-                    var accountLogInTest = await JsonSerializer.DeserializeAsync<AccountLogIn>(new MemoryStream(packet));
-                    Console.WriteLine($"name: {accountLogInTest.name}, passwd: {accountLogInTest}");
+                    Console.WriteLine(Encoding.UTF8.GetString(packet));
+                    var accountLogInTest = JsonSerializer.Deserialize<AccountLogIn>(Encoding.UTF8.GetString(packet));
+                    Console.WriteLine($"name: {accountLogInTest?.Name}, passwd: {Encoding.UTF8.GetString(accountLogInTest?.PasswdHash)}");
                 }
             }
         }
