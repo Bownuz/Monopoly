@@ -9,8 +9,9 @@ namespace ChatApplicatie {
             //Application.Run(new Choose);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            StartGui();
+            await Task.Run(() => {
+                StartGui();
+            });
         }
 
         public static void StartGui() {
