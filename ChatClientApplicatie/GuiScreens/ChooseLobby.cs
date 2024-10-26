@@ -9,16 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ChatClientApplicatie {
-    public partial class UserControl1 : UserControl {
-        public UserControl1() {
+    public partial class ChooseLobby : UserControl {
+        public ChooseLobby() {
             InitializeComponent();
-        }
-
-        private void label1_Click(object sender, EventArgs e) {
-        }
-
-        private void SubmitButton_Click(object sender, EventArgs e) {
-            
         }
     }
 }

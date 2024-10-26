@@ -12,13 +12,15 @@ namespace ChatClientApplicatie.State {
 
         public override string CheckInput(string input) {
 
-            string patientInfo = null;
-            if (input.Equals("Welcome Client")) {
-                patientInfo = handler.dataHandler.PatientInitialisationMessage();
+            string loginData = null;
+            if (input.Equals("Send data")) {
+                loginData = handler.GetClientInfo();
 
-                protocol.ChangeState(new SendData(protocol, handler));
+                protocol.ChangeState(new SearchLobby(protocol, handler));
+            } else {
+                MessageBox.Show("Client isn't connected to the server");
             }
-            return patientInfo;
+            return loginData;
         }
     }
 
@@ -29,7 +31,7 @@ namespace ChatClientApplicatie.State {
         public override string CheckInput(string input) {
             string patientData = null;
             if (input.Equals("Ready to recieve data")) {
-                patientData = handler.dataHandler.printDataAsJson();
+                //patientData = handler.dataHandler.printDataAsJson();
                 protocol.ChangeState(new ChatMessage(protocol, handler));
             }
             return patientData;
@@ -43,7 +45,7 @@ namespace ChatClientApplicatie.State {
         public override string CheckInput(string input) {
             string patientData = null;
             if (input.Equals("Ready to recieve data")) {
-                patientData = handler.dataHandler.printDataAsJson();
+                //patientData = handler.dataHandler.printDataAsJson();
             }
             return patientData;
         }

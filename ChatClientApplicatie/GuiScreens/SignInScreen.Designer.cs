@@ -1,5 +1,5 @@
 ﻿namespace ChatClientApplicatie {
-    partial class UserControl1 {
+    partial class SignInScreen {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
@@ -28,6 +28,7 @@
             UsernameLabel = new Label();
             PasswordLabel = new Label();
             SubmitButton = new Button();
+            CreateAcount = new Button();
             SuspendLayout();
             // 
             // UsernameTextBox
@@ -65,7 +66,7 @@
             // 
             // SubmitButton
             // 
-            SubmitButton.Location = new Point(263, 228);
+            SubmitButton.Location = new Point(173, 228);
             SubmitButton.Name = "SubmitButton";
             SubmitButton.Size = new Size(75, 23);
             SubmitButton.TabIndex = 4;
@@ -73,10 +74,21 @@
             SubmitButton.UseVisualStyleBackColor = true;
             SubmitButton.Click += SubmitButton_Click;
             // 
+            // CreateAcount
+            // 
+            CreateAcount.Location = new Point(263, 228);
+            CreateAcount.Name = "CreateAcount";
+            CreateAcount.Size = new Size(124, 23);
+            CreateAcount.TabIndex = 5;
+            CreateAcount.Text = "Create Acount";
+            CreateAcount.UseVisualStyleBackColor = true;
+            CreateAcount.Click += CreateAcount_Click;
+            // 
             // UserControl1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(CreateAcount);
             Controls.Add(SubmitButton);
             Controls.Add(PasswordLabel);
             Controls.Add(UsernameLabel);
@@ -95,5 +107,6 @@
         private Label UsernameLabel;
         private Label PasswordLabel;
         private Button SubmitButton;
+        private Button CreateAcount;
     }
 }
