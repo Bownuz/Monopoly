@@ -42,7 +42,7 @@ namespace ChatClientApplicatie.State {
             await Task.Run(() => ListenForMessagesAsync());
 
             while (clientSocket.Connected) {
-                string receivedMessage = await ReceiveMessageAsync();
+                string receivedMessage = await MessageCommunication.RecieveMessage(clientSocket);
                 if (receivedMessage != null) {
                     NewMessage?.Invoke(receivedMessage);
                     string response = protocol.processInput(receivedMessage);
@@ -69,20 +69,11 @@ namespace ChatClientApplicatie.State {
 
         private async Task ListenForMessagesAsync() {
             while (clientSocket.Connected) {
-                string receivedMessage = await ReceiveMessageAsync();
+                string receivedMessage = await MessageCommunication.RecieveMessage(clientSocket);
                 if (receivedMessage != null) {
                     NewMessage?.Invoke(receivedMessage);
                 }
             }
-        }
-
-        private async Task<string> ReceiveMessageAsync() {
-            byte[] buffer = new byte[1024];
-            int bytesRead = await clientSocket.ReceiveAsync(new ArraySegment<byte>(buffer), SocketFlags.None);
-            if (bytesRead > 0) {
-                return Encoding.UTF8.GetString(buffer, 0, bytesRead);
-            }
-            return null;
         }
 
         private async Task SendMessageAsync(string message) {

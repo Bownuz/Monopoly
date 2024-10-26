@@ -40,15 +40,15 @@ namespace ChatClientApplicatie {
         }
 
         private void CreateAcount_Click_1(object sender, EventArgs e) {
-                Console.WriteLine(createAccount);
-                createAccount = !createAccount;
-                if (createAccount) {
-                    UsernameLabel.Text = "Create username:";
-                    PasswordLabel.Text = "Create password:";
-                } else {
-                    UsernameLabel.Text = "Username:";
-                    PasswordLabel.Text = "Password:";
-                }
+            Console.WriteLine(createAccount);
+            createAccount = !createAccount;
+            if (createAccount) {
+                UsernameLabel.Text = "Create username:";
+                PasswordLabel.Text = "Create password:";
+            } else {
+                UsernameLabel.Text = "Username:";
+                PasswordLabel.Text = "Password:";
             }
+        }
     }
 }
