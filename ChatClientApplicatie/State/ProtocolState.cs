@@ -11,8 +11,8 @@ namespace ChatClientApplicatie.State {
         }
 
         public override string CheckInput(string input) {
-
             string loginData = null;
+
             if (input.Equals("Send userName")) {
                 loginData = handler.GetClientInfoAsJson();
             } else if (input.Equals("Username or password incorrect")) {
@@ -31,34 +31,25 @@ namespace ChatClientApplicatie.State {
         }
 
         public override string CheckInput(string input) {
-            string patientData = null;
-            if (input.Equals("Ready to recieve data")) {
-                //patientData = handler.dataHandler.printDataAsJson();
-                protocol.ChangeState(new ChatMessage(protocol, handler));
+            if (input.Equals("Lobby selected")) {
+                protocol.ChangeState(new Chat(protocol, handler)); 
+            } else if (input.Equals("Create lobby failed")) {
+                MessageBox.Show("Failed to create the lobby. Please try again.");
+            } else if (input.Equals("Lobby created")) {
+                protocol.ChangeState(new Chat(protocol, handler)); 
             }
-            return patientData;
+            return null;
         }
     }
 
-    public class ChatMessage : State {
-        public ChatMessage(DataProtocol protocol, Handler handler) : base(protocol, handler) {
-        }
+    public class Chat : State {
+        public Chat(DataProtocol protocol, Handler handler) : base(protocol, handler) { }
 
         public override string CheckInput(string input) {
-            string patientData = null;
-            if (input.Equals("Ready to recieve data")) {
-                //patientData = handler.dataHandler.printDataAsJson();
+            if (input.Equals("New message received")) {
+                handler.ReceiveMessage(input);
             }
-            return patientData;
-        }
-    }
-
-    public class Exit : State {
-        public Exit(DataProtocol protocol, Handler handler) : base(protocol, handler) {
-        }
-
-        public override string CheckInput(string input) {
-            return "";
+            return null;
         }
     }
 }

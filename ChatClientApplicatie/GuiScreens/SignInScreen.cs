@@ -11,31 +11,30 @@ namespace ChatClientApplicatie {
     public partial class SignInScreen : UserControl {
         private Socket clientSocket;
         private Handler handler;
-        private bool createAccount;
+        private bool createAccount = false;
 
         public SignInScreen(Form mainform) {
             InitializeComponent();
-            createAccount = false;
             StartConnectionWithServerAsync();
         }
 
         private async Task StartConnectionWithServerAsync() {
             IPAddress ipAddr = IPAddress.Parse("127.0.0.1");
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddr, 6666);
+            IPEndPoint localEndPoint = new IPEndPoint(ipAddr, 7272);
 
             clientSocket = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
-            await clientSocket.ConnectAsync(localEndPoint); // Asynchrone verbinding maken
+            await clientSocket.ConnectAsync(localEndPoint); 
             handler = new Handler(clientSocket, UsernameTextBox.Text, PasswordTextBox.Text);
 
-            await handler.HandleAsync(); // Asynchrone message handling in de Handler
+            await handler.HandleAsync(); 
         }
 
         private void SubmitButton_Click(object sender, EventArgs e) {
             if (!string.IsNullOrWhiteSpace(UsernameTextBox.Text) && !string.IsNullOrWhiteSpace(PasswordTextBox.Text)) {
                 handler.UpdateClientInfo(UsernameTextBox.Text, PasswordTextBox.Text, createAccount);
             } else {
-                MessageBox.Show("You haven't filled everything in");
+                MessageBox.Show("Please fill in all fields.");
             }
         }
 

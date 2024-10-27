@@ -4,9 +4,6 @@ namespace ChatApplicatie {
     internal static class ClientMain {
         [STAThread]
         static async Task Main() {
-
-            //ApplicationConfiguration.Initialize();
-            //Application.Run(new Choose);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             await Task.Run(() => {

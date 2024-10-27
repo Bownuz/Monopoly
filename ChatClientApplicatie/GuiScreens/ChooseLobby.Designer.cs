@@ -23,43 +23,56 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            messageListBox = new ListBox();
-            sendMessageButton = new Button();
-            inputTextBox = new TextBox();
+            lobbyListBox = new ListBox();
+            CreateLobbyTextBox = new TextBox();
+            CreateLobbyButton = new Button();
+            JoinLobbyButton = new Button();
             SuspendLayout();
             // 
-            // messageListBox
+            // lobbyListBox
             // 
-            messageListBox.FormattingEnabled = true;
-            messageListBox.ItemHeight = 15;
-            messageListBox.Location = new Point(15, 28);
-            messageListBox.Name = "messageListBox";
-            messageListBox.Size = new Size(120, 94);
-            messageListBox.TabIndex = 2;
+            lobbyListBox.FormattingEnabled = true;
+            lobbyListBox.ItemHeight = 15;
+            lobbyListBox.Location = new Point(207, 72);
+            lobbyListBox.Name = "lobbyListBox";
+            lobbyListBox.Size = new Size(297, 274);
+            lobbyListBox.TabIndex = 0;
             // 
-            // sendMessageButton
+            // CreateLobbyTextBox
             // 
-            sendMessageButton.Location = new Point(336, 241);
-            sendMessageButton.Name = "sendMessageButton";
-            sendMessageButton.Size = new Size(75, 23);
-            sendMessageButton.TabIndex = 3;
-            sendMessageButton.Text = "Submit";
-            sendMessageButton.UseVisualStyleBackColor = true;
+            CreateLobbyTextBox.Location = new Point(207, 348);
+            CreateLobbyTextBox.Name = "CreateLobbyTextBox";
+            CreateLobbyTextBox.Size = new Size(297, 23);
+            CreateLobbyTextBox.TabIndex = 1;
             // 
-            // inputTextBox
+            // CreateLobbyButton
             // 
-            inputTextBox.Location = new Point(107, 221);
-            inputTextBox.Name = "inputTextBox";
-            inputTextBox.Size = new Size(100, 23);
-            inputTextBox.TabIndex = 4;
+            CreateLobbyButton.Location = new Point(207, 377);
+            CreateLobbyButton.Name = "CreateLobbyButton";
+            CreateLobbyButton.Size = new Size(163, 23);
+            CreateLobbyButton.TabIndex = 2;
+            CreateLobbyButton.Text = "Create Lobby";
+            CreateLobbyButton.UseVisualStyleBackColor = true;
+            CreateLobbyButton.Click += CreateLobbyButton_Click_1;
+            // 
+            // JoinLobbyButton
+            // 
+            JoinLobbyButton.Location = new Point(429, 377);
+            JoinLobbyButton.Name = "JoinLobbyButton";
+            JoinLobbyButton.Size = new Size(75, 23);
+            JoinLobbyButton.TabIndex = 3;
+            JoinLobbyButton.Text = "Join Lobby";
+            JoinLobbyButton.UseVisualStyleBackColor = true;
+            JoinLobbyButton.Click += JoinLobbyButton_Click_1;
             // 
             // ChooseLobby
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(inputTextBox);
-            Controls.Add(sendMessageButton);
-            Controls.Add(messageListBox);
+            Controls.Add(JoinLobbyButton);
+            Controls.Add(CreateLobbyButton);
+            Controls.Add(CreateLobbyTextBox);
+            Controls.Add(lobbyListBox);
             Name = "ChooseLobby";
             Size = new Size(747, 505);
             ResumeLayout(false);
@@ -68,8 +81,9 @@
 
         #endregion
 
-        private ListBox messageListBox;
-        private Button sendMessageButton;
-        private TextBox inputTextBox;
+        private ListBox lobbyListBox;
+        private TextBox CreateLobbyTextBox;
+        private Button CreateLobbyButton;
+        private Button JoinLobbyButton;
     }
 }
