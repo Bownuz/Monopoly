@@ -26,7 +26,7 @@ namespace ChatClientApplicatie {
         private void CreateLobbyButton_Click_1(object sender, EventArgs e) {
             string newLobbyName = CreateLobbyTextBox.Text.Trim();
             if (!string.IsNullOrWhiteSpace(newLobbyName)) {
-                handler.UpdateLobbyInfo(newLobbyName);  // Stuur nieuwe lobbyinformatie naar de server
+                handler.UpdateLobbyInfo(newLobbyName);  
                 handler.protocol.ChangeState(new Chat(handler.protocol, handler));
             } else {
                 MessageBox.Show("Please enter a name for the new lobby.");
@@ -36,8 +36,7 @@ namespace ChatClientApplicatie {
         private void JoinLobbyButton_Click_1(object sender, EventArgs e) {
             if (lobbyListBox.SelectedItem != null) {
                 string selectedLobby = lobbyListBox.SelectedItem.ToString();
-                handler.UpdateLobbyInfo(selectedLobby);  // Stuur lobbyinformatie naar de server
-                // Verander naar de Chat state en GUI
+                handler.UpdateLobbyInfo(selectedLobby);
                 handler.protocol.ChangeState(new Chat(handler.protocol, handler));
             } else {
                 MessageBox.Show("Please select a lobby to join.");
