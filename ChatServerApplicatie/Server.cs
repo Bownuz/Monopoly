@@ -77,7 +77,7 @@ namespace ChatServerApplicatie {
                 MessageCommunication.SendMessage(userSocket, dataProtocol.processInput(""));
 
                 while (true) {
-                    string receivedMessage = await MessageCommunication.RecieveMessage(userSocket);
+                    string receivedMessage = await MessageCommunication.Receivemessage(userSocket);
                     if (receivedMessage != null) {
                         string response = dataProtocol.processInput(receivedMessage);
                         if (!string.IsNullOrEmpty(response)) {

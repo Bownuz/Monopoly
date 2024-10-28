@@ -1,4 +1,5 @@
-﻿using SendableObjects;
+﻿using ChatClientApplicatie.GuiScreens;
+using SendableObjects;
 using System;
 using System.Net.Http;
 using System.Net.Sockets;
@@ -12,27 +13,35 @@ namespace ChatClientApplicatie.State {
     public class Handler {
         public event Action<string> NewMessage;
         protected string clientName;
-        protected string clientPassword;
-        protected Socket clientSocket;
+        private string clientPassword;
+        private Socket clientSocket;
+        private Boolean createAcount;
         public DataProtocol protocol;
+        private ScreenManager screenManager;
 
-        public Handler(Socket clientSocket, string clientName, string clientPassword) {
+        public Handler(Socket clientSocket, string clientName, string clientPassword, ScreenManager screenManager) {
             this.clientSocket = clientSocket;
             this.clientName = clientName;
             this.clientPassword = clientPassword;
             this.protocol = new DataProtocol(this);
+            this.screenManager = screenManager;
         }
 
         internal string GetClientInfo() {
             return $"Clientname: {clientName} Clientpassword: {clientPassword}";
         }
 
+        public void ChangeScreen(UserControl nextScreen) {
+            screenManager.ChangeScreen(nextScreen);
+        }
+
         public async Task HandleAsync() {
             while (clientSocket.Connected) {
-                string receivedMessage = await MessageCommunication.RecieveMessage(clientSocket);
+                string receivedMessage = await MessageCommunication.Receivemessage(clientSocket);
                 if (receivedMessage != null) {
                     NewMessage?.Invoke(receivedMessage);
                     string response = protocol.processInput(receivedMessage);
+                    MessageBox.Show(response);
                     if (!string.IsNullOrEmpty(response)) {
                         await MessageCommunication.SendMessage(clientSocket, response);
                     }
@@ -43,6 +52,7 @@ namespace ChatClientApplicatie.State {
                 }
             }
         }
+
 
         public void UpdateLobbyInfo(string lobbyName) {
             MessageCommunication.SendMessage(clientSocket, $"Lobby:{lobbyName}");
@@ -56,12 +66,13 @@ namespace ChatClientApplicatie.State {
         public void UpdateClientInfo(string clientName, string clientPassword, bool createAccount) {
             this.clientName = clientName;
             this.clientPassword = clientPassword;
-            var accountInfo = new AccountLogIn(clientName, SHA512.HashData(Encoding.UTF8.GetBytes(clientPassword)));
+            this.createAcount = createAccount;
+            var accountInfo = new AccountLogIn(clientName, SHA512.HashData(Encoding.UTF8.GetBytes(clientPassword)), createAcount);
             MessageCommunication.SendMessage(clientSocket, JsonSerializer.Serialize(accountInfo));
         }
 
         internal string GetClientInfoAsJson() {
-            AccountLogIn accountLogIn = new AccountLogIn(clientName, SHA512.HashData(Encoding.UTF8.GetBytes(clientPassword)));
+            AccountLogIn accountLogIn = new AccountLogIn(clientName, SHA512.HashData(Encoding.UTF8.GetBytes(clientPassword)), createAcount);
             return JsonSerializer.Serialize<AccountLogIn>(accountLogIn);
         }
 

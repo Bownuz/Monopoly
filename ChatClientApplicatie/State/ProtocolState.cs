@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChatClientApplicatie.GuiScreens;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,7 @@ namespace ChatClientApplicatie.State {
             } else if (input.Equals("This name already exists")) {
                 MessageBox.Show(input);
             } else if (input.Equals("Welcome")) {
+                handler.ChangeScreen(new ChooseLobby(handler));
                 protocol.ChangeState(new SearchLobby(protocol, handler));
             }
             return loginData;
@@ -31,19 +33,20 @@ namespace ChatClientApplicatie.State {
         }
 
         public override string CheckInput(string input) {
-            if (input.Equals("Lobby selected")) {
-                protocol.ChangeState(new Chat(protocol, handler)); 
-            } else if (input.Equals("Create lobby failed")) {
-                MessageBox.Show("Failed to create the lobby. Please try again.");
-            } else if (input.Equals("Lobby created")) {
-                protocol.ChangeState(new Chat(protocol, handler)); 
+            MessageBox.Show(input);
+            if (input.Equals("Lobby joined")) {
+                handler.ChangeScreen(new ChatScreen(handler));
+                protocol.ChangeState(new Chat(protocol, handler));
+            } else if (input.Equals("Lobby not found")) {
+                MessageBox.Show("Lobby not found");
             }
             return null;
         }
     }
 
     public class Chat : State {
-        public Chat(DataProtocol protocol, Handler handler) : base(protocol, handler) { }
+        public Chat(DataProtocol protocol, Handler handler) : base(protocol, handler) { 
+        }
 
         public override string CheckInput(string input) {
             if (input.Equals("New message received")) {

@@ -25,13 +25,12 @@
         private void InitializeComponent() {
             SendButton = new Button();
             MessageTextBox = new TextBox();
-            ChatLogTextBox = new TextBox();
             ChatListBox = new ListBox();
             SuspendLayout();
             // 
             // SendButton
             // 
-            SendButton.Location = new Point(226, 193);
+            SendButton.Location = new Point(395, 395);
             SendButton.Name = "SendButton";
             SendButton.Size = new Size(75, 23);
             SendButton.TabIndex = 0;
@@ -41,33 +40,27 @@
             // 
             // MessageTextBox
             // 
-            MessageTextBox.Location = new Point(456, 271);
+            MessageTextBox.Location = new Point(170, 366);
             MessageTextBox.Name = "MessageTextBox";
-            MessageTextBox.Size = new Size(100, 23);
+            MessageTextBox.Size = new Size(300, 23);
             MessageTextBox.TabIndex = 1;
-            // 
-            // ChatLogTextBox
-            // 
-            ChatLogTextBox.Location = new Point(349, 369);
-            ChatLogTextBox.Name = "ChatLogTextBox";
-            ChatLogTextBox.Size = new Size(100, 23);
-            ChatLogTextBox.TabIndex = 2;
+            MessageTextBox.TextChanged += MessageTextBox_TextChanged;
             // 
             // ChatListBox
             // 
             ChatListBox.FormattingEnabled = true;
             ChatListBox.ItemHeight = 15;
-            ChatListBox.Location = new Point(181, 328);
+            ChatListBox.Location = new Point(170, 41);
             ChatListBox.Name = "ChatListBox";
-            ChatListBox.Size = new Size(120, 94);
+            ChatListBox.Size = new Size(300, 319);
             ChatListBox.TabIndex = 3;
             // 
             // ChatScreen
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ActiveCaption;
             Controls.Add(ChatListBox);
-            Controls.Add(ChatLogTextBox);
             Controls.Add(MessageTextBox);
             Controls.Add(SendButton);
             Name = "ChatScreen";

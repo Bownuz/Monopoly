@@ -48,16 +48,17 @@
             // UsernameLabel
             // 
             UsernameLabel.AutoSize = true;
-            UsernameLabel.Location = new Point(185, 137);
+            UsernameLabel.Location = new Point(163, 137);
             UsernameLabel.Name = "UsernameLabel";
             UsernameLabel.Size = new Size(63, 15);
             UsernameLabel.TabIndex = 2;
             UsernameLabel.Text = "Username:";
+            UsernameLabel.Click += UsernameLabel_Click;
             // 
             // PasswordLabel
             // 
             PasswordLabel.AutoSize = true;
-            PasswordLabel.Location = new Point(188, 177);
+            PasswordLabel.Location = new Point(163, 177);
             PasswordLabel.Name = "PasswordLabel";
             PasswordLabel.Size = new Size(60, 15);
             PasswordLabel.TabIndex = 3;
@@ -65,7 +66,7 @@
             // 
             // SubmitButton
             // 
-            SubmitButton.Location = new Point(173, 228);
+            SubmitButton.Location = new Point(163, 228);
             SubmitButton.Name = "SubmitButton";
             SubmitButton.Size = new Size(75, 23);
             SubmitButton.TabIndex = 4;
@@ -87,6 +88,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ActiveCaption;
             Controls.Add(CreateAcount);
             Controls.Add(SubmitButton);
             Controls.Add(PasswordLabel);

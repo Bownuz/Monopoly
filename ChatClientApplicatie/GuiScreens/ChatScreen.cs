@@ -31,12 +31,16 @@ namespace ChatClientApplicatie.GuiScreens {
         private void SendButton_Click(object sender, EventArgs e) {
             string message = MessageTextBox.Text.Trim();
             if (!string.IsNullOrWhiteSpace(message)) {
-                handler.SendChatMessage(message); 
+                handler.SendChatMessage(message);
                 MessageTextBox.Clear();
             }
         }
 
         private void ChatScreen_Load(object sender, EventArgs e) {
+        }
+
+        private void MessageTextBox_TextChanged(object sender, EventArgs e) {
+
         }
     }
 }

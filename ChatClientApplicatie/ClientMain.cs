@@ -1,4 +1,5 @@
 using ChatClientApplicatie;
+using ChatClientApplicatie.GuiScreens;
 
 namespace ChatApplicatie {
     internal static class ClientMain {
@@ -12,14 +13,13 @@ namespace ChatApplicatie {
         }
 
         public static void StartGui() {
-            Form mainForm = new Form();
-            SignInScreen signInScreen = new SignInScreen(mainForm);
+            Form mainForm = new Form {
+                WindowState = FormWindowState.Maximized,
+                Text = "Client Application"
+            };
+            ScreenManager screenManager = new ScreenManager(mainForm);
 
-            signInScreen.Dock = DockStyle.Fill;
-
-            mainForm.WindowState = FormWindowState.Maximized;
-            mainForm.Controls.Add(signInScreen);
-            mainForm.Text = "Client Application";
+            screenManager.ChangeScreen(new SignInScreen(screenManager));
             Application.Run(mainForm);
         }
     }

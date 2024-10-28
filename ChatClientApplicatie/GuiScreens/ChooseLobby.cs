@@ -1,4 +1,5 @@
-﻿using ChatClientApplicatie.State;
+﻿using ChatClientApplicatie.GuiScreens;
+using ChatClientApplicatie.State;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,8 +27,7 @@ namespace ChatClientApplicatie {
         private void CreateLobbyButton_Click_1(object sender, EventArgs e) {
             string newLobbyName = CreateLobbyTextBox.Text.Trim();
             if (!string.IsNullOrWhiteSpace(newLobbyName)) {
-                handler.UpdateLobbyInfo(newLobbyName);  
-                handler.protocol.ChangeState(new Chat(handler.protocol, handler));
+                handler.UpdateLobbyInfo(newLobbyName);
             } else {
                 MessageBox.Show("Please enter a name for the new lobby.");
             }
@@ -37,10 +37,13 @@ namespace ChatClientApplicatie {
             if (lobbyListBox.SelectedItem != null) {
                 string selectedLobby = lobbyListBox.SelectedItem.ToString();
                 handler.UpdateLobbyInfo(selectedLobby);
-                handler.protocol.ChangeState(new Chat(handler.protocol, handler));
             } else {
                 MessageBox.Show("Please select a lobby to join.");
             }
+        }
+
+        private void ChooseLobby_Load_1(object sender, EventArgs e) {
+
         }
     }
 }
