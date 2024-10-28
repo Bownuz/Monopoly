@@ -34,7 +34,7 @@ namespace ChatServerApplicatie {
                 AccountManager.Accounts = JsonSerializer.Deserialize<Dictionary<string, Account>>(Encoding.UTF8.GetString(File.ReadAllBytes(accountPath)));
             }
             if (File.Exists(lobbiesPath)) {
-                LobbyManager.SetLobbies(JsonSerializer.Deserialize<Dictionary<string, IChatroom>>(Encoding.UTF8.GetString(File.ReadAllBytes(lobbiesPath)));)
+                LobbyManager.SetLobbies(JsonSerializer.Deserialize<Dictionary<string, IChatroom>>(Encoding.UTF8.GetString(File.ReadAllBytes(lobbiesPath))));
             } 
         }
 
