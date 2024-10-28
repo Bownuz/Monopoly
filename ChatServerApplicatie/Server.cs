@@ -80,7 +80,7 @@ namespace ChatServerApplicatie {
             using (userSocket) {
                 Console.WriteLine("Client connected");
                 DataProtocol  dataProtocol = new DataProtocol();
-                MessageCommunication.SendMessage(userSocket, dataProtocol.processInput(""));
+                MessageCommunication.SendMessage(userSocket, dataProtocol.processInput("", userSocket));
 
                 while (true) {
                     string receivedMessage = await MessageCommunication.Receivemessage(userSocket);
