@@ -1,4 +1,4 @@
-﻿using ChatServerApplicatie.Chatroom;
+using ChatServerApplicatie.Chatroom;
 using ChatServerApplicatie.ChatRoom;
 using SendableObjects;
 using System;
@@ -77,11 +77,11 @@ namespace ChatServerApplicatie.ProtocolState {
                 this.chatRoom = chatRoom;
             }
 
-            public override string CheckUserInput(string input) {
-                if (input.StartsWith("Message:")) {
-                    string messageText = input.Substring("Message:".Length).Trim();
-                    var chatMessage = new ChatMessage("Client", Encoding.UTF8.GetBytes(messageText));
-                    chatRoom.AddMessage(chatMessage);
+        public override string CheckUserInput(string input) {
+            if (input.StartsWith("Message:")) {
+                string messageText = input.Substring("Message:".Length).Trim();
+                var chatMessage = ChatMessage.Create("Client", Encoding.UTF8.GetBytes(messageText));
+                chatRoom.AddMessage(chatMessage);  
 
                     return $"New message in {chatRoom.ChatRoomID} from {chatMessage.Sender}: {messageText}";
                 }
