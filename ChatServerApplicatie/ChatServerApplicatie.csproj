@@ -11,4 +11,9 @@
     <ProjectReference Include="..\SendableObjects\SendableObjects.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ServerData\lobbies\" />
+    <Folder Include="ServerData\accounts\" />
+  </ItemGroup>
+
 </Project>

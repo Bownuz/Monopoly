@@ -1,62 +1,60 @@
-﻿using ChatClientApplicatie.State;
+﻿using ChatClientApplicatie.GuiScreens;
+using ChatClientApplicatie.State;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics.Eventing.Reader;
-using System.Drawing;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ChatClientApplicatie {
     public partial class SignInScreen : UserControl {
-        private TcpClient tcpClient;
+        private Socket clientSocket;
         private Handler handler;
-        private Boolean createAcount;
-        private Socket client;
-        public SignInScreen(Form mainform) {
+        private bool createAccount = false;
+        private ScreenManager screenManager;
+
+        public SignInScreen(ScreenManager screenManager) {
+            this.screenManager = screenManager;
             InitializeComponent();
-            StartConnectionWithServer();
-            this.createAcount = false;
+            StartConnectionWithServerAsync();
         }
 
-        public void StartConnectionWithServer() {
-            //this.tcpClient = new TcpClient("localhost", 4789);
-            this.handler = new Handler(tcpClient, UsernameTextBox.Text, PasswordTextBox.Text);
-            Thread connectionThread = new Thread(() => handler.HandleThread());
-            connectionThread.Start();
-
+        private async Task StartConnectionWithServerAsync() {
             IPAddress ipAddr = IPAddress.Parse("127.0.0.1");
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddr, 6666);
+            IPEndPoint localEndPoint = new IPEndPoint(ipAddr, 7272);
 
-            client = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            client.Connect(localEndPoint);
-        }
+            clientSocket = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
-        private void label1_Click(object sender, EventArgs e) {
+            await clientSocket.ConnectAsync(localEndPoint);
+            handler = new Handler(clientSocket, UsernameTextBox.Text, PasswordTextBox.Text, screenManager);
+
+            await handler.HandleAsync();
         }
 
         private void SubmitButton_Click(object sender, EventArgs e) {
             if (!string.IsNullOrWhiteSpace(UsernameTextBox.Text) && !string.IsNullOrWhiteSpace(PasswordTextBox.Text)) {
-                handler.UpdateClientInfo(UsernameTextBox.Text, PasswordTextBox.Text, createAcount);
+                handler.UpdateClientInfo(UsernameTextBox.Text, PasswordTextBox.Text, createAccount);
             } else {
-                MessageBox.Show("You haven't filled everything in");
+                MessageBox.Show("Please fill in all fields.");
             }
         }
 
-        private void CreateAcount_Click(object sender, EventArgs e) {
-            if (createAcount) {
+        private void CreateAcount_Click_1(object sender, EventArgs e) {
+            Console.WriteLine(createAccount);
+            createAccount = !createAccount;
+            if (createAccount) {
                 UsernameLabel.Text = "Create username:";
                 PasswordLabel.Text = "Create password:";
             } else {
                 UsernameLabel.Text = "Username:";
                 PasswordLabel.Text = "Password:";
             }
+        }
+
+        private void UsernameLabel_Click(object sender, EventArgs e) {
+
         }
     }
 }

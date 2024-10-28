@@ -1,60 +1,90 @@
-﻿using SendableObjects;
+﻿using ChatClientApplicatie.GuiScreens;
+using SendableObjects;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Net.Http;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ChatClientApplicatie.State {
     public class Handler {
         public event Action<string> NewMessage;
-        protected bool isRunning;
-        protected bool isInitialized;
         protected string clientName;
-        protected string clientPassword;
-        protected string clientMessage;
-        protected TcpClient tcpClient;
+        private string clientPassword;
+        private Socket clientSocket;
+        private Boolean createAcount;
+        public DataProtocol protocol;
+        private ScreenManager screenManager;
 
-        internal Handler(TcpClient tcpClient, string clientName, string clientPassword) {
-            //NetworkStream stream = tcpClient.GetStream();
-            this.tcpClient = tcpClient;
-            this.isRunning = true;
-            this.isInitialized = false;
+        public Handler(Socket clientSocket, string clientName, string clientPassword, ScreenManager screenManager) {
+            this.clientSocket = clientSocket;
             this.clientName = clientName;
             this.clientPassword = clientPassword;
+            this.protocol = new DataProtocol(this);
+            this.screenManager = screenManager;
         }
 
-        internal void UpdateClientInfo(string clientName, string clientPassword, Boolean createAcount) {
+        internal string GetClientInfo() {
+            return $"Clientname: {clientName} Clientpassword: {clientPassword}";
+        }
+
+        public void ChangeScreen(UserControl nextScreen) {
+            screenManager.ChangeScreen(nextScreen);
+        }
+
+        public async Task HandleAsync() {
+            while (clientSocket.Connected) {
+                string receivedMessage = await MessageCommunication.Receivemessage(clientSocket);
+                if (receivedMessage != null) {
+                    NewMessage?.Invoke(receivedMessage);
+                    string response = protocol.processInput(receivedMessage);
+                    MessageBox.Show(response);
+                    if (!string.IsNullOrEmpty(response)) {
+                        await MessageCommunication.SendMessage(clientSocket, response);
+                    }
+                    if (response == "Disconnected") {
+                        Disconnect();
+                        break;
+                    }
+                }
+            }
+        }
+
+
+        public void UpdateLobbyInfo(string lobbyName) {
+            MessageCommunication.SendMessage(clientSocket, $"Lobby:{lobbyName}");
+        }
+
+        public void SendChatMessage(string message) {
+            var chatMessage = new SendMessage(message);
+            MessageCommunication.SendMessage(clientSocket, JsonSerializer.Serialize(chatMessage));
+        }
+
+        public void UpdateClientInfo(string clientName, string clientPassword, bool createAccount) {
             this.clientName = clientName;
             this.clientPassword = clientPassword;
-            MessageCommunication.SendMessage(tcpClient, GetClientInfoAsJson());
+            this.createAcount = createAccount;
+            var accountInfo = new AccountLogIn(clientName, SHA512.HashData(Encoding.UTF8.GetBytes(clientPassword)), createAcount);
+            MessageCommunication.SendMessage(clientSocket, JsonSerializer.Serialize(accountInfo));
         }
 
         internal string GetClientInfoAsJson() {
-            AccountLogIn accountLogIn = new AccountLogIn(clientName, SHA512.HashData(Encoding.UTF8.GetBytes(clientPassword)));
+            AccountLogIn accountLogIn = new AccountLogIn(clientName, SHA512.HashData(Encoding.UTF8.GetBytes(clientPassword)), createAcount);
             return JsonSerializer.Serialize<AccountLogIn>(accountLogIn);
         }
 
-        public void HandleThread() {
-            DataProtocol protocol = new DataProtocol(this);
-            new Thread(() => MessageCommunication.RecieveMessage(tcpClient)).Start();
+        public void ReceiveMessage(string message) {
+            NewMessage?.Invoke(message);  
+        }
 
-            while (tcpClient.Connected) {
-                string recievedMessage;
-                string response;
-                if ((recievedMessage = MessageCommunication.RecieveMessage(tcpClient)) != null) {
-                    NewMessage?.Invoke(recievedMessage);
-                    response = protocol.processInput(recievedMessage);
-                    if (response != "") {
-                        MessageCommunication.SendMessage(tcpClient, response);
-                        if (response.Equals("Goodbye")) {
-                            tcpClient.Close();
-                        }
-                    }
-                }
+        public void Disconnect() {
+            if (clientSocket.Connected) {
+                clientSocket.Shutdown(SocketShutdown.Both);
+                clientSocket.Close();
+                NewMessage?.Invoke("You have been disconnected.");
             }
         }
     }

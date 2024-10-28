@@ -11,7 +11,8 @@ namespace ChatClientApplicatie.State {
         public DataProtocol(Handler handler) {
             this.state = new Login(this, handler);
         }
-        public String processInput(String input) {
+
+        public string processInput(string input) {
             return state.CheckInput(input);
         }
 

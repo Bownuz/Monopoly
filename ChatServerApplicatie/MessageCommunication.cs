@@ -3,12 +3,12 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChatClientApplicatie {
+namespace ChatServerApplicatie {
+
     public class MessageCommunication {
         public static async Task<string> Receivemessage(Socket client) {
             try {
-
-                byte[] buffer = new byte[1024];
+                byte[] buffer = new byte[1024]; 
                 int receivedBytes = await client.ReceiveAsync(buffer, SocketFlags.None);
 
                 if (receivedBytes == 0) {

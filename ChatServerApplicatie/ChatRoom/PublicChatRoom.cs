@@ -4,15 +4,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 
 namespace ChatServerApplicatie.Chatroom {
     internal class PublicChatRoom : IChatroom {
-        public string ChatRoomID => throw new NotImplementedException();
+        public string ChatRoomID { get; }
+        public ChatMessage[] RecentChatMessagesBuffer { get; set; } = new ChatMessage[50];
 
-        public List<ChatMessage> ChatMessages => throw new NotImplementedException();
+        public PublicChatRoom(string ChatRoomID) {
+            this.ChatRoomID = ChatRoomID;
+        }
 
-        public void NewMessage() {
-            throw new NotImplementedException();
+        public void AddMessage(ChatMessage message) {
+            ChatMessage[] newRecentChatMessagesBuffer = new ChatMessage[RecentChatMessagesBuffer.Length];
+
+            newRecentChatMessagesBuffer[0] = message;
+
+            Array.Copy(RecentChatMessagesBuffer, 0, newRecentChatMessagesBuffer, 1, RecentChatMessagesBuffer.Length - 1);
+            RecentChatMessagesBuffer = newRecentChatMessagesBuffer;
         }
     }
 }

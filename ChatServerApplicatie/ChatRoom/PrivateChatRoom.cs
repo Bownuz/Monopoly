@@ -7,12 +7,20 @@ using System.Threading.Tasks;
 
 namespace ChatServerApplicatie.Chatroom {
     internal class PrivateChatRoom : IChatroom {
-        public string ChatRoomID => throw new NotImplementedException();
+        public string ChatRoomID { get; }
+        public ChatMessage[] RecentChatMessagesBuffer { get; set; } = new ChatMessage[50];
 
-        public List<ChatMessage> ChatMessages => throw new NotImplementedException();
+        public PrivateChatRoom(string ChatRoomID) {
+            this.ChatRoomID = ChatRoomID;
+        }
 
-        public void NewMessage() {
-            throw new NotImplementedException();
+        public void AddMessage(ChatMessage message) {
+            ChatMessage[] newRecentChatMessagesBuffer = new ChatMessage[RecentChatMessagesBuffer.Length];
+
+            newRecentChatMessagesBuffer[0] = message;
+
+            Array.Copy(RecentChatMessagesBuffer, 0, newRecentChatMessagesBuffer, 1, RecentChatMessagesBuffer.Length - 1);
+            RecentChatMessagesBuffer = newRecentChatMessagesBuffer;
         }
 
     }

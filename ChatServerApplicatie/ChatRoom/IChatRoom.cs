@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 namespace ChatServerApplicatie.Chatroom {
     internal interface IChatroom {
         string ChatRoomID { get; }
-        List<ChatMessage> ChatMessages { get; }
-        void NewMessage();
+        ChatMessage[] RecentChatMessagesBuffer { get; set; }
+        void AddMessage(ChatMessage message);
 
     }
 }

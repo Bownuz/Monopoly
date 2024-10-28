@@ -1,27 +1,25 @@
 using ChatClientApplicatie;
+using ChatClientApplicatie.GuiScreens;
 
 namespace ChatApplicatie {
     internal static class ClientMain {
         [STAThread]
-        static void Main() {
-
-            //ApplicationConfiguration.Initialize();
-            //Application.Run(new Choose);
+        static async Task Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            StartGui();
+            await Task.Run(() => {
+                StartGui();
+            });
         }
 
         public static void StartGui() {
-            Form mainForm = new Form();
-            SignInScreen userControl = new SignInScreen(mainForm);
+            Form mainForm = new Form {
+                WindowState = FormWindowState.Maximized,
+                Text = "Client Application"
+            };
+            ScreenManager screenManager = new ScreenManager(mainForm);
 
-            userControl.Dock = DockStyle.Fill;
-
-            mainForm.WindowState = FormWindowState.Maximized;
-            mainForm.Controls.Add(userControl);
-            mainForm.Text = "Client Application";
+            screenManager.ChangeScreen(new SignInScreen(screenManager));
             Application.Run(mainForm);
         }
     }
