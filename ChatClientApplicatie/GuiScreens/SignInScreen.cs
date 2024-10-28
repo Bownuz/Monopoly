@@ -1,4 +1,5 @@
-﻿using ChatClientApplicatie.State;
+﻿using ChatClientApplicatie.GuiScreens;
+using ChatClientApplicatie.State;
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -12,8 +13,10 @@ namespace ChatClientApplicatie {
         private Socket clientSocket;
         private Handler handler;
         private bool createAccount = false;
+        private ScreenManager screenManager;
 
-        public SignInScreen(Form mainform) {
+        public SignInScreen(ScreenManager screenManager) {
+            this.screenManager = screenManager;
             InitializeComponent();
             StartConnectionWithServerAsync();
         }
@@ -24,10 +27,10 @@ namespace ChatClientApplicatie {
 
             clientSocket = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
-            await clientSocket.ConnectAsync(localEndPoint); 
-            handler = new Handler(clientSocket, UsernameTextBox.Text, PasswordTextBox.Text);
+            await clientSocket.ConnectAsync(localEndPoint);
+            handler = new Handler(clientSocket, UsernameTextBox.Text, PasswordTextBox.Text, screenManager);
 
-            await handler.HandleAsync(); 
+            await handler.HandleAsync();
         }
 
         private void SubmitButton_Click(object sender, EventArgs e) {
@@ -48,6 +51,10 @@ namespace ChatClientApplicatie {
                 UsernameLabel.Text = "Username:";
                 PasswordLabel.Text = "Password:";
             }
+        }
+
+        private void UsernameLabel_Click(object sender, EventArgs e) {
+
         }
     }
 }
