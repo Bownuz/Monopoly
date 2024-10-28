@@ -5,12 +5,20 @@ using System.Text.Json.Serialization;
 
 namespace SendableObjects {
     public class AccountLogIn {
-        public AccountLogIn(string Name, byte[] PasswdHash) {
-            this.Name = Name;
-            this.PasswdHash = PasswdHash;
-        }
+        public string name { get; }
+        public byte[] passwdHash { get; }
 
-        public string Name { get; set; }
-        public byte[] PasswdHash { get; set; }
+        public AccountLogIn(string name, byte[] passwdHash) {
+            this.name = name;
+            this.passwdHash = passwdHash;
+        }
+    }
+
+    public class SendMessage {
+        public string message { get; }
+
+        public SendMessage(string message) {
+            this.message = message;
+        }
     }
 }

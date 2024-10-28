@@ -12,7 +12,7 @@ namespace ChatClientApplicatie.State {
             this.state = new Login(this, handler);
         }
 
-        public String processInput(String input) {
+        public string processInput(string input) {
             return state.CheckInput(input);
         }
 

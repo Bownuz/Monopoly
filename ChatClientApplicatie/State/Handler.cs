@@ -11,26 +11,16 @@ using System.Threading.Tasks;
 namespace ChatClientApplicatie.State {
     public class Handler {
         public event Action<string> NewMessage;
-        protected bool isRunning;
-        protected bool isInitialized;
         protected string clientName;
         protected string clientPassword;
-        protected string clientMessage;
         protected Socket clientSocket;
+        public DataProtocol protocol;
 
-        internal Handler(Socket clientSocket, string clientName, string clientPassword) {
+        public Handler(Socket clientSocket, string clientName, string clientPassword) {
             this.clientSocket = clientSocket;
-            this.isRunning = true;
-            this.isInitialized = false;
             this.clientName = clientName;
             this.clientPassword = clientPassword;
-        }
-
-        internal void AddClientInfo(string clientName, string clientPassword, bool createAccount) {
-            this.clientName = clientName;
-            this.clientPassword = clientPassword;
-            string message = $"ClientName:{clientName} ClientPassword:{clientPassword} NewAccount:{createAccount}";
-            SendMessageAsync(message).Wait();
+            this.protocol = new DataProtocol(this);
         }
 
         internal string GetClientInfo() {
@@ -38,29 +28,36 @@ namespace ChatClientApplicatie.State {
         }
 
         public async Task HandleAsync() {
-            DataProtocol protocol = new DataProtocol(this);
-
-            using (clientSocket) {
-                while (true) {
-                    string receivedMessage = await MessageCommunication.RecieveMessage(clientSocket);
-                    if (receivedMessage != null) {
-                        NewMessage?.Invoke(receivedMessage);
-                        string response = protocol.processInput(receivedMessage);
-                        if (!string.IsNullOrEmpty(response)) {
-                            await SendMessageAsync(response);
-                            if (response.Equals("Goodbye")) {
-                                break;
-                            }
-                        }
+            while (clientSocket.Connected) {
+                string receivedMessage = await MessageCommunication.RecieveMessage(clientSocket);
+                if (receivedMessage != null) {
+                    NewMessage?.Invoke(receivedMessage);
+                    string response = protocol.processInput(receivedMessage);
+                    if (!string.IsNullOrEmpty(response)) {
+                        await MessageCommunication.SendMessage(clientSocket, response);
+                    }
+                    if (response == "Disconnected") {
+                        Disconnect();
+                        break;
                     }
                 }
             }
         }
 
-        internal void UpdateClientInfo(string clientName, string clientPassword, Boolean createAcount) {
+        public void UpdateLobbyInfo(string lobbyName) {
+            MessageCommunication.SendMessage(clientSocket, $"Lobby:{lobbyName}");
+        }
+
+        public void SendChatMessage(string message) {
+            var chatMessage = new SendMessage(message);
+            MessageCommunication.SendMessage(clientSocket, JsonSerializer.Serialize(chatMessage));
+        }
+
+        public void UpdateClientInfo(string clientName, string clientPassword, bool createAccount) {
             this.clientName = clientName;
             this.clientPassword = clientPassword;
-            MessageCommunication.SendMessage(clientSocket, GetClientInfoAsJson());
+            var accountInfo = new AccountLogIn(clientName, SHA512.HashData(Encoding.UTF8.GetBytes(clientPassword)));
+            MessageCommunication.SendMessage(clientSocket, JsonSerializer.Serialize(accountInfo));
         }
 
         internal string GetClientInfoAsJson() {
@@ -68,19 +65,16 @@ namespace ChatClientApplicatie.State {
             return JsonSerializer.Serialize<AccountLogIn>(accountLogIn);
         }
 
-        [Obsolete]
-        private async Task ListenForMessagesAsync() {
-            while (clientSocket.Connected) {
-                string receivedMessage = await MessageCommunication.RecieveMessage(clientSocket);
-                if (receivedMessage != null) {
-                    NewMessage?.Invoke(receivedMessage);
-                }
-            }
+        public void ReceiveMessage(string message) {
+            NewMessage?.Invoke(message);  
         }
 
-        private async Task SendMessageAsync(string message) {
-            byte[] buffer = Encoding.UTF8.GetBytes(message);
-            await clientSocket.SendAsync(new ArraySegment<byte>(buffer), SocketFlags.None);
+        public void Disconnect() {
+            if (clientSocket.Connected) {
+                clientSocket.Shutdown(SocketShutdown.Both);
+                clientSocket.Close();
+                NewMessage?.Invoke("You have been disconnected.");
+            }
         }
     }
 }

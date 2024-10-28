@@ -1,43 +1,28 @@
-﻿    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net.Sockets;
-    using System.Text;
-    using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading.Tasks;
 
-    namespace ChatServerApplicatie {
-        public class MessageCommunication {
-            public static async Task<string> RecieveMessage(Socket client) {
-                try {
-                    byte[] sizeIncomingPacket = new byte[4];
-                    int byteSizeIncomingPacket = await client.ReceiveAsync(sizeIncomingPacket);
-                    int sizeMessage = BitConverter.ToInt32(sizeIncomingPacket);
+namespace ChatServerApplicatie {
+    public class MessageCommunication {
+        public static async Task<string> RecieveMessage(Socket client) {
+            byte[] sizeBuffer = new byte[4];
+            await client.ReceiveAsync(sizeBuffer, SocketFlags.None);
+            int messageSize = BitConverter.ToInt32(sizeBuffer, 0);
 
-                    byte[] packet = new byte[sizeMessage];
-                    int bytePacket = await client.ReceiveAsync(packet);
-                    if (bytePacket > 0) {
-                        string message = Encoding.UTF8.GetString(sizeIncomingPacket, 0, bytePacket);
-                        Console.WriteLine("Bericht ontvangen: " + message);
-                        return message;
-                    }
-                    return null;
-                }
-                catch (IOException ex) {
-                    Console.WriteLine("Fout bij ontvangen bericht: " + ex.Message);
-                    return null;
-                }
-            }
+            byte[] messageBuffer = new byte[messageSize];
+            int receivedBytes = await client.ReceiveAsync(messageBuffer, SocketFlags.None);
+            return Encoding.UTF8.GetString(messageBuffer, 0, receivedBytes);
+        }
 
-            public static async Task SendMessage(Socket client, string message) {
-                try {
-                    byte[] buffer = Encoding.UTF8.GetBytes(message);
-                    await client.SendAsync(BitConverter.GetBytes(buffer.Length));
-                    await client.SendAsync(buffer); 
-                    Console.WriteLine("Bericht verzonden: " + message);
-                }
-                catch (SocketException ex) {
-                    Console.WriteLine("Fout bij verzenden bericht: " + ex.Message);
-                }
-            }
+        public static async Task SendMessage(Socket client, string message) {
+            byte[] messageBuffer = Encoding.UTF8.GetBytes(message);
+            byte[] sizeBuffer = BitConverter.GetBytes(messageBuffer.Length);
+
+            await client.SendAsync(sizeBuffer, SocketFlags.None);
+            await client.SendAsync(messageBuffer, SocketFlags.None);
         }
     }
+}

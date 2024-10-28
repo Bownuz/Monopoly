@@ -14,7 +14,7 @@ namespace ChatClientApplicatie.State {
             this.handler = handler;
         }
 
-        public abstract String CheckInput(String input);
+        public abstract string CheckInput(string input);
 
     }
 }

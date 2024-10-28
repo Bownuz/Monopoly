@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 
 namespace ChatServerApplicatie.Chatroom {
     internal class PrivateChatRoom : IChatroom {
-        public string ChatRoomID => throw new NotImplementedException();
+        public string ChatRoomID { get; }
+        public List<ChatMessage> ChatMessages { get; } = new List<ChatMessage>();
 
-        public List<ChatMessage> ChatMessages => throw new NotImplementedException();
-
-        public void NewMessage() {
-            throw new NotImplementedException();
+        public PrivateChatRoom(string chatRoomId) {
+            ChatRoomID = chatRoomId;
         }
 
+        public void AddMessage(ChatMessage message) {
+            ChatMessages.Add(message);
+        }
     }
 }
