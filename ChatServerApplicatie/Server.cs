@@ -37,11 +37,11 @@ namespace ChatServerApplicatie {
             string lobbiesPath = $"{ServerPath}/ServerData/lobbies.json";
 
             if (File.Exists(accountPath)) {
-                AccountManager.Accounts = JsonSerializer.Deserialize<Dictionary<string, Account>>(Encoding.UTF8.GetString(File.ReadAllBytes(accountPath)));
+                AccountManager.Accounts = JsonSerializer.Deserialize<Dictionary<string, byte[]>>(Encoding.UTF8.GetString(File.ReadAllBytes(accountPath)));
             }
             if (File.Exists(lobbiesPath)) {
-                LobbyManager.SetLobbies(JsonSerializer.Deserialize<Dictionary<string, IChatroom>>(Encoding.UTF8.GetString(File.ReadAllBytes(lobbiesPath))));
-            } 
+                LobbyManager.SetLobbies(JsonSerializer.Deserialize<Dictionary<string, PublicChatRoom>>(Encoding.UTF8.GetString(File.ReadAllBytes(lobbiesPath))));
+            }
         }
 
         public async Task UserConnectionManager() {

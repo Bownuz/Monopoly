@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 
 namespace ChatServerApplicatie.ChatRoom {
     internal class AccountManager {
-        public static Dictionary<string, Account> Accounts { get; set; } = new Dictionary<string, Account>();
+        public static Dictionary<string, byte[]> Accounts { get; set; } = new Dictionary<string, byte[]>();
     }
 }

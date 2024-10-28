@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ChatServerApplicatie.Chatroom {
     internal interface IChatroom {
         string ChatRoomID { get; }
-        ChatMessage[] RecentChatMessagesBuffer { get; set; }
+        public List<ChatMessage> ChatMessages { get; }
         void AddMessage(ChatMessage message);
 
     }
