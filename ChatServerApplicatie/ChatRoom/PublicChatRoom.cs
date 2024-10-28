@@ -11,8 +11,8 @@ namespace ChatServerApplicatie.Chatroom {
         public string ChatRoomID { get; }
         public ChatMessage[] RecentChatMessagesBuffer { get; set; } = new ChatMessage[50];
 
-        public PublicChatRoom(string chatRoomId) {
-            ChatRoomID = chatRoomId;
+        public PublicChatRoom(string ChatRoomID) {
+            this.ChatRoomID = ChatRoomID;
         }
 
         public void AddMessage(ChatMessage message) {
