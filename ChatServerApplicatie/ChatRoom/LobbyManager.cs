@@ -38,7 +38,6 @@ namespace ChatServerApplicatie.ChatRoom {
         public static PublicChatRoom GetOrCreateLobby(string lobbyName) {
             if (!lobbies.ContainsKey(lobbyName)) {
                 lobbies[lobbyName] = new PublicChatRoom(lobbyName);
-                userSocket[lobbyName] = 
             }
             return lobbies[lobbyName];
         }

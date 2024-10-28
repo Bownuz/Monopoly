@@ -35,41 +35,44 @@ namespace ChatClientApplicatie.State {
             }
             return loginData;
         }
+    }
+
+    public class SearchLobby : State {
+        public SearchLobby(DataProtocol protocol, Handler handler) : base(protocol, handler) {
         }
 
-        public class SearchLobby : State {
-            public SearchLobby(DataProtocol protocol, Handler handler) : base(protocol, handler) {
+        public override string CheckInput(string input) {
+            if (input.Equals("Lobby joined")) {
+                handler.ChangeScreen(new ChatScreen(handler));
+                protocol.ChangeState(new Chat(protocol, handler));
+            } else if (input.Equals("Lobby not found")) {
+                MessageBox.Show("Lobby not found");
             }
+            return null;
+        }
+    }
 
-            public override string CheckInput(string input) {
-                if (input.Equals("Lobby joined")) {
-                    handler.ChangeScreen(new ChatScreen(handler));
-                    protocol.ChangeState(new Chat(protocol, handler));
-                } else if (input.Equals("Lobby not found")) {
-                    MessageBox.Show("Lobby not found");
-                }
-                return null;
-            }
+    public class Chat : State {
+        public Chat(DataProtocol protocol, Handler handler) : base(protocol, handler) {
         }
 
-        public class Chat : State {
-            public Chat(DataProtocol protocol, Handler handler) : base(protocol, handler) {
+        public override string CheckInput(string input) {
+            try {
+                List<ChatMessage> messageList = JsonSerializer.Deserialize<List<ChatMessage>>(input);
+                
+                foreach(ChatMessage message in messageList) {
+                    handler.ReceiveMessage(message.Sender + ": " + Encoding.UTF8.GetString(message.Message));
+                }
             }
+            catch {
+                List<string> lobbyList = JsonSerializer.Deserialize<List<string>>(input);
 
-            public override string CheckInput(string input) {
-                try {
-                    List<string> lobbyList = JsonSerializer.Deserialize<List<string>>(input);
-                    ChooseLobby chooseLobby = new ChooseLobby(handler);
-                    chooseLobby.UpdateLobbyList(lobbyList);
-                    handler.ChangeScreen(chooseLobby);
-                    protocol.ChangeState(new SearchLobby(protocol, handler));
-                }
-                catch {
-                    //if (input.Equals("New message received")) {
-                        handler.ReceiveMessage(input);
-                    //}
-                }
-                return null;
+                ChooseLobby chooseLobby = new ChooseLobby(handler);
+                chooseLobby.UpdateLobbyList(lobbyList);
+                handler.ChangeScreen(chooseLobby);
+                protocol.ChangeState(new SearchLobby(protocol, handler));
             }
+            return null;
         }
+    }
 }

@@ -85,12 +85,9 @@ namespace ChatServerApplicatie.ProtocolState {
         public override string CheckUserInput(string input, Socket socket) {
             if (input.StartsWith("Message:")) {
                 string messageText = input.Substring("Message:".Length).Trim();
-                var chatMessage = ChatMessage.Create("Client", Encoding.UTF8.GetBytes(messageText));
+                var chatMessage = ChatMessage.Create("Client", Encoding.UTF8.GetBytes(userName + ": " + messageText));
                 chatRoom.AddMessage(chatMessage);
 
-                
-
-                return $"New message in {chatRoom.ChatRoomID} from {chatMessage.Sender}: {messageText}";
             } else if (input.Equals("Go back")) {
                 LobbyManager.RemoveUserFromLobby(chatRoom.ChatRoomID, userName);
                 protocol.ChangeState(new SearchLobby(protocol, userName));
