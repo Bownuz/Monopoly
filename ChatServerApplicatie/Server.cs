@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Security;
 using System.Net.Sockets;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -22,6 +23,7 @@ namespace ChatServerApplicatie {
         }
 
         public async Task UserConnectionManager() {
+            Console.WriteLine("Running server");
             IPEndPoint localEndPoint = new IPEndPoint(IPAddr, 7272);
 
             Socket serverSocket = new Socket(IPAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -30,6 +32,7 @@ namespace ChatServerApplicatie {
                 serverSocket.Listen(10);
 
                 for (; ; ) {
+                    Console.WriteLine("Waiting for clients");
                     Socket NewUserConnection = await serverSocket.AcceptAsync();
 
                     if (NewUserConnection == null)
@@ -53,7 +56,10 @@ namespace ChatServerApplicatie {
 
         public async Task HandleUser(Socket userSocket) {
             using (userSocket) {
+                Console.WriteLine("Client connected");
                 DataProtocol  dataProtocol = new DataProtocol();
+                MessageCommunication.SendMessage(userSocket, dataProtocol.processInput(""));
+
                 while (true) {
                     string receivedMessage = await MessageCommunication.RecieveMessage(userSocket);
                     if (receivedMessage != null) {

@@ -9,7 +9,7 @@ namespace ChatServerApplicatie.Chatroom {
     internal interface IChatroom {
         string ChatRoomID { get; }
         List<ChatMessage> ChatMessages { get; }
-        void NewMessage();
+        void AddMessage(ChatMessage message);
 
     }
 }

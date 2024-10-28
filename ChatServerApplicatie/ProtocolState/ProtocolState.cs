@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ChatServerApplicatie.Chatroom;
+using ChatServerApplicatie.ChatRoom;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +12,13 @@ namespace ChatServerApplicatie.ProtocolState {
         }
 
         public override string CheckUserInput(string input) {
-            throw new NotImplementedException();
+            if (input.StartsWith("Login:")) {
+                string userName = input.Substring("Login:".Length).Trim();
+
+                protocol.ChangeState(new SearchLobby(protocol));
+                return "Welcome, please select a lobby.";
+            }
+            return "Invalid login input.";
         }
     }
     class SearchLobby : ProtocolState {
@@ -18,15 +26,31 @@ namespace ChatServerApplicatie.ProtocolState {
         }
 
         public override string CheckUserInput(string input) {
-            throw new NotImplementedException();
+            if (input.StartsWith("Lobby:")) {
+                string lobbyName = input.Substring("Lobby:".Length).Trim();
+
+                var lobby = LobbyManager.GetOrCreateLobby(lobbyName);
+                protocol.ChangeState(new Chat(protocol, lobby));  
+                return $"Joined lobby: {lobbyName}";
+            }
+            return "Lobby not found.";
         }
     }
-    class ChatMessage : ProtocolState {
-        public ChatMessage(DataProtocol dataProtocol) : base(dataProtocol) {
+    class Chat : ProtocolState {
+        private IChatroom chatRoom;
+        public Chat(DataProtocol dataProtocol, IChatroom chatRoom) : base(dataProtocol) {
+            this.chatRoom = chatRoom;
         }
 
         public override string CheckUserInput(string input) {
-            throw new NotImplementedException();
+            if (input.StartsWith("Message:")) {
+                string messageText = input.Substring("Message:".Length).Trim();
+                var chatMessage = new ChatMessage("Client", Encoding.UTF8.GetBytes(messageText));
+                chatRoom.AddMessage(chatMessage);  
+
+                return $"New message in {chatRoom.ChatRoomID} from {chatMessage.Sender}: {messageText}";
+            }
+            return null;
         }
     }
     class Exit : ProtocolState {
@@ -34,7 +58,7 @@ namespace ChatServerApplicatie.ProtocolState {
         }
 
         public override string CheckUserInput(string input) {
-            throw new NotImplementedException();
+            return "Goodbye";
         }
     }
 }
