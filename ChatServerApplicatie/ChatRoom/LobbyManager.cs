@@ -8,9 +8,17 @@ using System.Threading.Tasks;
 
 namespace ChatServerApplicatie.ChatRoom {
     internal static class LobbyManager {
-        private static Dictionary<string, IChatroom> lobbies = new Dictionary<string, IChatroom>();
+        private static Dictionary<string, PublicChatRoom> lobbies = new Dictionary<string, PublicChatRoom>();
 
-        public static void SetLobbies(Dictionary<string, IChatroom> lobbydict) {
+        public static Dictionary<string, PublicChatRoom> GetLobbies() {
+            return lobbies;
+        }
+
+        public static List<string> GetLobbyNames() {
+            return lobbies.Keys.ToList();
+        }
+
+        public static void SetLobbies(Dictionary<string, PublicChatRoom> lobbydict) {
             lobbies = lobbydict;
         }
 
