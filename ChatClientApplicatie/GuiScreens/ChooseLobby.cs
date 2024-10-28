@@ -33,6 +33,13 @@ namespace ChatClientApplicatie {
             }
         }
 
+        public void UpdateLobbyList(List<string> lobbyList) {
+            foreach (string name in lobbyList) {
+                lobbyListBox.Items.Add(name);
+            }
+            lobbyListBox.Show();
+        }
+
         private void JoinLobbyButton_Click_1(object sender, EventArgs e) {
             if (lobbyListBox.SelectedItem != null) {
                 string selectedLobby = lobbyListBox.SelectedItem.ToString();
@@ -43,6 +50,10 @@ namespace ChatClientApplicatie {
         }
 
         private void ChooseLobby_Load_1(object sender, EventArgs e) {
+
+        }
+
+        private void lobbyListBox_SelectedIndexChanged(object sender, EventArgs e) {
 
         }
     }

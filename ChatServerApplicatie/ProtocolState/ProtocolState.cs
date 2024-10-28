@@ -36,63 +36,66 @@ namespace ChatServerApplicatie.ProtocolState {
                 if (AccountManager.Accounts.TryGetValue(userName, out var storedHash)) {
                     if (storedHash.SequenceEqual(passwordHash)) {
                         protocol.ChangeState(new SearchLobby(protocol));
-                        return JsonSerializer.Serialize(LobbyManager.GetLobbyNames()); 
+                        return JsonSerializer.Serialize(LobbyManager.GetLobbyNames());
                     } else {
                         return "Username or password incorrect";
                     }
                 } else {
                     return "Account does not exist.";
                 }
-            } 
+            }
             if (AccountManager.Accounts.ContainsKey(userName)) {
-                return "This name already exists"; 
+                return "This name already exists";
             }
 
             AccountManager.Accounts[userName] = passwordHash;
             protocol.ChangeState(new SearchLobby(protocol));
-            return JsonSerializer.Serialize(LobbyManager.GetLobbyNames()); 
+            return JsonSerializer.Serialize(LobbyManager.GetLobbyNames());
         }
     }
 
     class SearchLobby : ProtocolState {
-            public SearchLobby(DataProtocol dataProtocol) : base(dataProtocol) {
-            }
-
-            public override string CheckUserInput(string input) {
-                if (input.StartsWith("Lobby:")) {
-                    string lobbyName = input.Substring("Lobby:".Length).Trim();
-
-                    var lobby = LobbyManager.GetOrCreateLobby(lobbyName);
-                    protocol.ChangeState(new Chat(protocol, lobby));
-                    return "Lobby joined";
-                }
-                return "Lobby not found";
-            }
+        public SearchLobby(DataProtocol dataProtocol) : base(dataProtocol) {
         }
-        class Chat : ProtocolState {
-            private IChatroom chatRoom;
-            public Chat(DataProtocol dataProtocol, IChatroom chatRoom) : base(dataProtocol) {
-                this.chatRoom = chatRoom;
+
+        public override string CheckUserInput(string input) {
+            if (input.StartsWith("Lobby:")) {
+                string lobbyName = input.Substring("Lobby:".Length).Trim();
+
+                var lobby = LobbyManager.GetOrCreateLobby(lobbyName);
+                protocol.ChangeState(new Chat(protocol, lobby));
+                return "Lobby joined";
             }
+            return "Lobby not found";
+        }
+    }
+    class Chat : ProtocolState {
+        private IChatroom chatRoom;
+        public Chat(DataProtocol dataProtocol, IChatroom chatRoom) : base(dataProtocol) {
+            this.chatRoom = chatRoom;
+        }
 
         public override string CheckUserInput(string input) {
             if (input.StartsWith("Message:")) {
                 string messageText = input.Substring("Message:".Length).Trim();
                 var chatMessage = ChatMessage.Create("Client", Encoding.UTF8.GetBytes(messageText));
-                chatRoom.AddMessage(chatMessage);  
+                chatRoom.AddMessage(chatMessage);
 
-                    return $"New message in {chatRoom.ChatRoomID} from {chatMessage.Sender}: {messageText}";
-                }
-                return null;
+                return $"New message in {chatRoom.ChatRoomID} from {chatMessage.Sender}: {messageText}";
+            } else if (input.Equals("Go back")) {
+                protocol.ChangeState(new SearchLobby(protocol));
+                return JsonSerializer.Serialize(LobbyManager.GetLobbyNames());
             }
-        }
-        class Exit : ProtocolState {
-            public Exit(DataProtocol dataProtocol) : base(dataProtocol) {
-            }
-
-            public override string CheckUserInput(string input) {
-                return "Goodbye";
-            }
+            return null;
         }
     }
+    class Exit : ProtocolState {
+        public Exit(DataProtocol dataProtocol) : base(dataProtocol) {
+        }
+
+        public override string CheckUserInput(string input) {
+            return "Goodbye";
+        }
+    }
+}
 

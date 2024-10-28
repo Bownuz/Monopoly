@@ -62,7 +62,7 @@ namespace ChatServerApplicatie {
 
                     var userTask = HandleUser(NewUserConnection);
                     ActiveConnections.Add(userTask);
-                    await userTask.ContinueWith(t => { 
+                    userTask.ContinueWith(t => { 
                         ActiveConnections.Remove(userTask);
                         if (t.IsFaulted) {
                             Console.WriteLine(t.Exception.InnerException.Message);

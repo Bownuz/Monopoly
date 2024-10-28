@@ -26,6 +26,7 @@
             SendButton = new Button();
             MessageTextBox = new TextBox();
             ChatListBox = new ListBox();
+            BackButton = new Button();
             SuspendLayout();
             // 
             // SendButton
@@ -55,11 +56,22 @@
             ChatListBox.Size = new Size(300, 319);
             ChatListBox.TabIndex = 3;
             // 
+            // BackButton
+            // 
+            BackButton.Location = new Point(596, 69);
+            BackButton.Name = "BackButton";
+            BackButton.Size = new Size(75, 23);
+            BackButton.TabIndex = 5;
+            BackButton.Text = "Back";
+            BackButton.UseVisualStyleBackColor = true;
+            BackButton.Click += BackButton_Click;
+            // 
             // ChatScreen
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
+            Controls.Add(BackButton);
             Controls.Add(ChatListBox);
             Controls.Add(MessageTextBox);
             Controls.Add(SendButton);
@@ -75,5 +87,6 @@
         private TextBox MessageTextBox;
         private TextBox ChatLogTextBox;
         private ListBox ChatListBox;
+        private Button BackButton;
     }
 }
