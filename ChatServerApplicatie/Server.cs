@@ -1,3 +1,5 @@
+using ChatServerApplicatie.Chatroom;
+using ChatServerApplicatie.ChatRoom;
 using ChatServerApplicatie.ProtocolState;
 using SendableObjects;
 using System;
@@ -16,10 +18,24 @@ namespace ChatServerApplicatie {
     internal class Server {
         List<Task> ActiveConnections { get; }
         IPAddress IPAddr { get; }
+        public static readonly string ServerPath = $"{Directory.GetCurrentDirectory()}/../../..";
 
         public Server(IPAddress ipAddr) { 
             ActiveConnections = new List<Task>();
             IPAddr = ipAddr;
+            GetSavedServerData();
+        }
+
+        private void GetSavedServerData() {
+            string accountPath = $"{ServerPath}/ServerData/account.json";
+            string lobbiesPath = $"{ServerPath}/ServerData/lobbies.json";
+
+            if (File.Exists(accountPath)) {
+                AccountManager.Accounts = JsonSerializer.Deserialize<Dictionary<string, Account>>(Encoding.UTF8.GetString(File.ReadAllBytes(accountPath)));
+            }
+            if (File.Exists(lobbiesPath)) {
+                LobbyManager.SetLobbies(JsonSerializer.Deserialize<Dictionary<string, IChatroom>>(Encoding.UTF8.GetString(File.ReadAllBytes(lobbiesPath)));)
+            } 
         }
 
         public async Task UserConnectionManager() {
