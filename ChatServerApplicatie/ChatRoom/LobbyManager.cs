@@ -14,6 +14,10 @@ namespace ChatServerApplicatie.ChatRoom {
             return lobbies;
         }
 
+        public static List<string> GetLobbyNames() {
+            return lobbies.Keys.ToList();
+        }
+
         public static void SetLobbies(Dictionary<string, PublicChatRoom> lobbydict) {
             lobbies = lobbydict;
         }

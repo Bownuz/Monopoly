@@ -36,7 +36,7 @@ namespace ChatServerApplicatie.ProtocolState {
                 if (AccountManager.Accounts.TryGetValue(userName, out var storedHash)) {
                     if (storedHash.SequenceEqual(passwordHash)) {
                         protocol.ChangeState(new SearchLobby(protocol));
-                        return "Welcome"; 
+                        return JsonSerializer.Serialize(LobbyManager.GetLobbyNames()); 
                     } else {
                         return "Username or password incorrect";
                     }
@@ -50,7 +50,7 @@ namespace ChatServerApplicatie.ProtocolState {
 
             AccountManager.Accounts[userName] = passwordHash;
             protocol.ChangeState(new SearchLobby(protocol));
-            return "Welcome"; 
+            return JsonSerializer.Serialize(LobbyManager.GetLobbyNames()); 
         }
     }
 
