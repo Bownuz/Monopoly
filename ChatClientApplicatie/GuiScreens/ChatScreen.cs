@@ -31,6 +31,7 @@ namespace ChatClientApplicatie.GuiScreens {
         private void SendButton_Click(object sender, EventArgs e) {
             string message = MessageTextBox.Text.Trim();
             if (!string.IsNullOrWhiteSpace(message)) {
+                ChatListBox.Items.Add("Me: " + message);
                 handler.SendChatMessage(message);
                 MessageTextBox.Clear();
             }
@@ -41,6 +42,14 @@ namespace ChatClientApplicatie.GuiScreens {
 
         private void MessageTextBox_TextChanged(object sender, EventArgs e) {
 
+        }
+
+        private void BackButton_Click(object sender, EventArgs e) {
+            MessageCommunication.SendMessage(handler.clientSocket, "Go back");
+        }
+
+        internal void ShowMessage(string input) {
+            ChatListBox.Items.Add(input);
         }
     }
 }

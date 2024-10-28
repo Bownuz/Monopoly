@@ -14,7 +14,7 @@ namespace ChatClientApplicatie.State {
         public event Action<string> NewMessage;
         protected string clientName;
         private string clientPassword;
-        private Socket clientSocket;
+        public Socket clientSocket;
         private Boolean createAcount;
         public DataProtocol protocol;
         private ScreenManager screenManager;
@@ -41,7 +41,6 @@ namespace ChatClientApplicatie.State {
                 if (receivedMessage != null) {
                     NewMessage?.Invoke(receivedMessage);
                     string response = protocol.processInput(receivedMessage);
-                    MessageBox.Show(response);
                     if (!string.IsNullOrEmpty(response)) {
                         await MessageCommunication.SendMessage(clientSocket, response);
                     }
