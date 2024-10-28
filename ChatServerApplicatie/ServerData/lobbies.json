@@ -1,1 +1,1 @@
-{"test":{"ChatRoomID":"test","ChatMessages":[{"Sender":"Client","Message":"ZDogeyJtZXNzYWdlIjoiZSJ9","DateTimeMessage":"2024-10-28T22:46:54.2693148Z","MessageID":{"IsPowerOfTwo":false,"IsZero":false,"IsOne":false,"IsEven":false,"Sign":1}},{"Sender":"Client","Message":"ZDogeyJtZXNzYWdlIjoiZSJ9","DateTimeMessage":"2024-10-28T22:47:39.5685389Z","MessageID":{"IsPowerOfTwo":false,"IsZero":false,"IsOne":false,"IsEven":true,"Sign":1}}]}}
+{"e":{"ChatRoomID":"e","ChatMessages":[{"Sender":"e","Message":"eyJtZXNzYWdlIjoiZSJ9","DateTimeMessage":"2024-10-28T23:49:55.1569525Z"}]}}

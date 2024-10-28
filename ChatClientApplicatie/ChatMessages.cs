@@ -11,15 +11,13 @@ namespace ChatClientApplicatie {
         public string Sender { get; }
         public Byte[] Message { get; }
         public DateTime DateTimeMessage { get; }
-        public BigInteger MessageID { get; }
 
 
 
-        public ChatMessage(string Sender, Byte[] Message, DateTime DateTimeMessage, BigInteger MessageID) {
+        public ChatMessage(string Sender, Byte[] Message, DateTime DateTimeMessage) {
             this.Sender = Sender;
             this.Message = Message;
             this.DateTimeMessage = DateTimeMessage;
-            this.MessageID = MessageID;
         }
     }
 }

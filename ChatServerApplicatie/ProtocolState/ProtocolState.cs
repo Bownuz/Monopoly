@@ -31,7 +31,9 @@ namespace ChatServerApplicatie.ProtocolState {
             }
 
             string userName = loginData.name;
-            LobbyManager.userSocket.Add(userName, socket);
+            if (!LobbyManager.userSocket.ContainsKey(userName)) {
+                LobbyManager.userSocket.Add(userName, socket);
+            }
             byte[] passwordHash = loginData.passwdHash;
             Boolean createAcount = loginData.createAcount;
             if (!createAcount) {
@@ -43,7 +45,7 @@ namespace ChatServerApplicatie.ProtocolState {
                         return "Username or password incorrect";
                     }
                 } else {
-                    return "Account does not exist.";
+                    return "Account does not exist";
                 }
             }
             if (AccountManager.Accounts.ContainsKey(userName)) {
@@ -84,8 +86,11 @@ namespace ChatServerApplicatie.ProtocolState {
 
         public override string CheckUserInput(string input, Socket socket) {
             if (input.StartsWith("Message:")) {
+                //JsonSerializer.Serialize(input.Substring("Message:".Length));
                 string messageText = input.Substring("Message:".Length).Trim();
-                var chatMessage = ChatMessage.Create("Client", Encoding.UTF8.GetBytes(userName + ": " + messageText));
+                //Console.WriteLine(JsonSerializer.Serialize("Hallo: " + messageText));
+                Console.WriteLine("Ja: " + messageText);
+                var chatMessage = ChatMessage.Create(userName, Encoding.UTF8.GetBytes(messageText));
                 chatRoom.AddMessage(chatMessage);
 
             } else if (input.Equals("Go back")) {

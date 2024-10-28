@@ -11,24 +11,17 @@ namespace ChatServerApplicatie.ChatRoom {
         public string Sender { get; }
         public Byte[] Message { get; }
         public DateTime DateTimeMessage { get; }
-        public BigInteger MessageID { get; }
 
 
 
-        public ChatMessage(string Sender, Byte[] Message,DateTime DateTimeMessage, BigInteger MessageID) {
+        public ChatMessage(string Sender, Byte[] Message, DateTime DateTimeMessage) {
             this.Sender = Sender;
             this.Message = Message;
             this.DateTimeMessage = DateTimeMessage;
-            this.MessageID = MessageID;
         }
 
         public static ChatMessage Create(string sender, Byte[] message) {
-            return new ChatMessage(sender, message, DateTime.UtcNow,  new BigInteger(
-                SHA256.HashData(
-                    Encoding.UTF8.GetBytes(sender)
-                    .Concat(message)
-                    .Concat(BitConverter.GetBytes(DateTime.UtcNow.ToBinary()))
-                    .ToArray()), true));
+            return new ChatMessage(sender, message, DateTime.UtcNow);
         }
     }
 }
