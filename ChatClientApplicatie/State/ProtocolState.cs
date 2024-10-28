@@ -59,9 +59,14 @@ namespace ChatClientApplicatie.State {
         public override string CheckInput(string input) {
             try {
                 List<ChatMessage> messageList = JsonSerializer.Deserialize<List<ChatMessage>>(input);
-                
+
+                int count = 0;
                 foreach(ChatMessage message in messageList) {
-                    handler.ReceiveMessage(message.Sender + ": " + Encoding.UTF8.GetString(message.Message));
+                    if (count == 0) {
+                        count++;
+                    } else {
+                        handler.ReceiveMessage(message.Sender.Substring("Client: ".Length) + ": " + Encoding.UTF8.GetString(message.Message));
+                    }
                 }
             }
             catch {

@@ -31,7 +31,6 @@ namespace ChatClientApplicatie.GuiScreens {
         private void SendButton_Click(object sender, EventArgs e) {
             string message = MessageTextBox.Text.Trim();
             if (!string.IsNullOrWhiteSpace(message)) {
-                ChatListBox.Items.Add("Me: " + message);
                 handler.SendChatMessage(message);
                 MessageTextBox.Clear();
             }

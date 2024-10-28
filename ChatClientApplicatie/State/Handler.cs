@@ -59,7 +59,7 @@ namespace ChatClientApplicatie.State {
 
         public void SendChatMessage(string message) {
             var chatMessage = new SendMessage(message);
-            MessageCommunication.SendMessage(clientSocket, JsonSerializer.Serialize(chatMessage));
+            MessageCommunication.SendMessage(clientSocket, "Message:" + JsonSerializer.Serialize(chatMessage));
         }
 
         public void UpdateClientInfo(string clientName, string clientPassword, bool createAccount) {
