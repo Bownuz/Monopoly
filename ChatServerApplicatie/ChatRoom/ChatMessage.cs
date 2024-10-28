@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ChatServerApplicatie.ChatRoom {
-    [Serializable]
     internal class ChatMessage {
         public string Sender { get; }
         public Byte[] Message { get; }

@@ -1,4 +1,4 @@
-﻿using System.Runtime.Intrinsics.Arm;
+using System.Runtime.Intrinsics.Arm;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -11,6 +11,10 @@ namespace SendableObjects {
         public AccountLogIn(string name, byte[] passwdHash) {
             this.name = name;
             this.passwdHash = passwdHash;
+        }
+
+        public static AccountLogIn CreateAccountLogIn(string name, string passwd) {
+            return new AccountLogIn(name, SHA512.HashData(Encoding.UTF8.GetBytes(passwd)));
         }
     }
 

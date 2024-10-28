@@ -1,4 +1,4 @@
-﻿using ChatServerApplicatie.ProtocolState;
+using ChatServerApplicatie.ProtocolState;
 using SendableObjects;
 using System;
 using System.Collections.Generic;
