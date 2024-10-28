@@ -10,17 +10,15 @@ using System.Threading.Tasks;
 
 namespace ChatServerApplicatie.ProtocolState {
     class Login : ProtocolState {
-        private static Dictionary<string, byte[]> accounts = new Dictionary<string, byte[]>(); // Simuleer accountopslag met wachtwoordhashes
+        private static Dictionary<string, byte[]> accounts = new Dictionary<string, byte[]>();
 
         public Login(DataProtocol dataProtocol) : base(dataProtocol) { }
 
         public override string CheckUserInput(string input) {
-            // Stuur prompt voor gebruikersnaam indien nog geen gegevens ontvangen
             if (string.IsNullOrWhiteSpace(input)) {
                 return "Send userName";
             }
 
-            // Deserialiseer JSON naar AccountLogIn-object om logingegevens te controleren
             AccountLogIn loginData;
             try {
                 loginData = JsonSerializer.Deserialize<AccountLogIn>(input);
@@ -36,28 +34,25 @@ namespace ChatServerApplicatie.ProtocolState {
             string userName = loginData.name;
             byte[] passwordHash = loginData.passwdHash;
             Boolean createAcount = loginData.createAcount;
-            // Verwerk Login of Register commando's
             if (!createAcount) {
                 if (accounts.TryGetValue(userName, out var storedHash)) {
                     if (storedHash.SequenceEqual(passwordHash)) {
                         protocol.ChangeState(new SearchLobby(protocol));
-                        return "Welcome"; // Succesvolle login
+                        return "Welcome"; 
                     } else {
-                        return "Username or password incorrect"; // Wachtwoord fout
+                        return "Username or password incorrect";
                     }
                 } else {
-                    return "Account does not exist."; // Geen bestaand account
+                    return "Account does not exist.";
                 }
             } 
-                // Controleer of gebruikersnaam al bestaat
                 if (accounts.ContainsKey(userName)) {
-                    return "This name already exists"; // Naam bestaat al
+                    return "This name already exists"; 
                 }
 
-                // Maak nieuw account aan
                 accounts[userName] = passwordHash;
                 protocol.ChangeState(new SearchLobby(protocol));
-                return "Welcome"; // Nieuwe account succesvol gemaakt
+                return "Welcome"; 
             }
     }
 

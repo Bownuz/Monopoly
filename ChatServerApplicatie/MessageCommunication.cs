@@ -5,21 +5,16 @@ using System.Threading.Tasks;
 
 namespace ChatServerApplicatie {
 
-    // Ontvangt een string-bericht van de client
     public class MessageCommunication {
-        // Methode om berichten te ontvangen
         public static async Task<string> Receivemessage(Socket client) {
             try {
-                // Buffer om het bericht te ontvangen (kan groter zijn indien nodig)
-                byte[] buffer = new byte[1024];  // Voorbeeldbuffer van 1024 bytes
+                byte[] buffer = new byte[1024]; 
                 int receivedBytes = await client.ReceiveAsync(buffer, SocketFlags.None);
 
                 if (receivedBytes == 0) {
-                    // De verbinding is waarschijnlijk gesloten door de server
                     return null;
                 }
 
-                // Converteer de ontvangen bytes naar een string
                 string message = Encoding.UTF8.GetString(buffer, 0, receivedBytes);
                 Console.WriteLine($"Bericht ontvangen: {message}");
                 return message;
@@ -30,10 +25,8 @@ namespace ChatServerApplicatie {
             }
         }
 
-        // Methode om berichten te versturen
         public static async Task SendMessage(Socket client, string message) {
             try {
-                // Verzend het bericht als UTF-8 bytes
                 byte[] messageBuffer = Encoding.UTF8.GetBytes(message);
                 await client.SendAsync(messageBuffer, SocketFlags.None);
 
