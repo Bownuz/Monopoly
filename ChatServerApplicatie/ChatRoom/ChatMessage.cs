@@ -15,9 +15,9 @@ namespace ChatServerApplicatie.ChatRoom {
 
 
 
-        public ChatMessage(string sender, Byte[] message,DateTime DateTimeMessage, BigInteger MessageID) {
-            this.Sender = sender;
-            this.Message = message;
+        public ChatMessage(string Sender, Byte[] Message,DateTime DateTimeMessage, BigInteger MessageID) {
+            this.Sender = Sender;
+            this.Message = Message;
             this.DateTimeMessage = DateTimeMessage;
             this.MessageID = MessageID;
         }
