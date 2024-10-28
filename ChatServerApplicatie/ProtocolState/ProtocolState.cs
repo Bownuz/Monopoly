@@ -45,7 +45,7 @@ namespace ChatServerApplicatie.ProtocolState {
         public override string CheckUserInput(string input) {
             if (input.StartsWith("Message:")) {
                 string messageText = input.Substring("Message:".Length).Trim();
-                var chatMessage = new ChatMessage("Client", Encoding.UTF8.GetBytes(messageText));
+                var chatMessage = ChatMessage.Create("Client", Encoding.UTF8.GetBytes(messageText));
                 chatRoom.AddMessage(chatMessage);  
 
                 return $"New message in {chatRoom.ChatRoomID} from {chatMessage.Sender}: {messageText}";
