@@ -36,5 +36,17 @@ namespace ChatServerApplicatie {
                 Console.WriteLine($"Error sending message: {ex.Message}");
             }
         }
+
+        public static void SendMessageSync(Socket client, string message) {
+            try {
+                byte[] messageBuffer = Encoding.UTF8.GetBytes(message);
+                client.Send(messageBuffer, SocketFlags.None);
+
+                Console.WriteLine($"Bericht verstuurd: {message}");
+            }
+            catch (Exception ex) {
+                Console.WriteLine($"Error sending message: {ex.Message}");
+            }
+        }
     }
 }

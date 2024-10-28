@@ -31,6 +31,7 @@ namespace ChatServerApplicatie.ProtocolState {
             }
 
             string userName = loginData.name;
+            LobbyManager.userSocket.Add(userName, socket);
             byte[] passwordHash = loginData.passwdHash;
             Boolean createAcount = loginData.createAcount;
             if (!createAcount) {
@@ -81,16 +82,13 @@ namespace ChatServerApplicatie.ProtocolState {
             this.userName = userName;
         }
 
-        public override async string CheckUserInput(string input, Socket socket) {
+        public override string CheckUserInput(string input, Socket socket) {
             if (input.StartsWith("Message:")) {
                 string messageText = input.Substring("Message:".Length).Trim();
                 var chatMessage = ChatMessage.Create("Client", Encoding.UTF8.GetBytes(messageText));
                 chatRoom.AddMessage(chatMessage);
 
-                List<Socket> userSockets = LobbyManager.get
-                foreach (var socket in userSockets) {
-                    await MessageCommunication.SendMessage(socket, messageText);
-                }
+                
 
                 return $"New message in {chatRoom.ChatRoomID} from {chatMessage.Sender}: {messageText}";
             } else if (input.Equals("Go back")) {

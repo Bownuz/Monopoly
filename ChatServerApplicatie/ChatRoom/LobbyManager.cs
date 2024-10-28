@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace ChatServerApplicatie.ChatRoom {
     internal static class LobbyManager {
         private static Dictionary<string, PublicChatRoom> lobbies = new Dictionary<string, PublicChatRoom>();
-        private static Dictionary<string, Socket> userSocket = new Dictionary<string, List<Socket>>();
+        public static Dictionary<string, Socket> userSocket = new Dictionary<string, Socket>();
 
         public static Dictionary<string, PublicChatRoom> GetLobbies() {
             return lobbies;

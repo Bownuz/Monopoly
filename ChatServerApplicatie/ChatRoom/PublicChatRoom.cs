@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
@@ -30,7 +31,7 @@ namespace ChatServerApplicatie.Chatroom {
 
         private void NotifyUsers() {
             foreach (string userName in members) {
-                MessageCommunication
+                MessageCommunication.SendMessageSync(LobbyManager.userSocket[userName], JsonSerializer.Serialize(ChatMessages));
             }
         }
 
