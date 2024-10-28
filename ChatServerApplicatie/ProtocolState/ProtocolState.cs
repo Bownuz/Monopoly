@@ -10,8 +10,6 @@ using System.Threading.Tasks;
 
 namespace ChatServerApplicatie.ProtocolState {
     class Login : ProtocolState {
-        private static Dictionary<string, byte[]> accounts = new Dictionary<string, byte[]>();
-
         public Login(DataProtocol dataProtocol) : base(dataProtocol) { }
 
         public override string CheckUserInput(string input) {
@@ -35,10 +33,10 @@ namespace ChatServerApplicatie.ProtocolState {
             byte[] passwordHash = loginData.passwdHash;
             Boolean createAcount = loginData.createAcount;
             if (!createAcount) {
-                if (accounts.TryGetValue(userName, out var storedHash)) {
+                if (AccountManager.Accounts.TryGetValue(userName, out var storedHash)) {
                     if (storedHash.SequenceEqual(passwordHash)) {
                         protocol.ChangeState(new SearchLobby(protocol));
-                        return "Welcome"; 
+                        return JsonSerializer.Serialize(LobbyManager.GetLobbyNames()); 
                     } else {
                         return "Username or password incorrect";
                     }
@@ -46,14 +44,14 @@ namespace ChatServerApplicatie.ProtocolState {
                     return "Account does not exist.";
                 }
             } 
-                if (accounts.ContainsKey(userName)) {
-                    return "This name already exists"; 
-                }
-
-                accounts[userName] = passwordHash;
-                protocol.ChangeState(new SearchLobby(protocol));
-                return "Welcome"; 
+            if (AccountManager.Accounts.ContainsKey(userName)) {
+                return "This name already exists"; 
             }
+
+            AccountManager.Accounts[userName] = passwordHash;
+            protocol.ChangeState(new SearchLobby(protocol));
+            return JsonSerializer.Serialize(LobbyManager.GetLobbyNames()); 
+        }
     }
 
     class SearchLobby : ProtocolState {

@@ -8,12 +8,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ServerData\accounts\**" />
+    <Compile Remove="ServerData\lobbies\**" />
+    <EmbeddedResource Remove="ServerData\accounts\**" />
+    <EmbeddedResource Remove="ServerData\lobbies\**" />
+    <None Remove="ServerData\accounts\**" />
+    <None Remove="ServerData\lobbies\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SendableObjects\SendableObjects.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ServerData\lobbies\" />
-    <Folder Include="ServerData\accounts\" />
+    <Folder Include="ServerData\" />
   </ItemGroup>
 
 </Project>

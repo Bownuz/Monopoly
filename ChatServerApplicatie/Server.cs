@@ -26,16 +26,22 @@ namespace ChatServerApplicatie {
             GetSavedServerData();
         }
 
+        public void Shutdown() {
+            File.WriteAllBytes($"{ServerPath}/ServerData/account.json", Encoding.UTF8.GetBytes(JsonSerializer.Serialize(AccountManager.Accounts)));
+            File.WriteAllBytes($"{ServerPath}/ServerData/lobbies.json", Encoding.UTF8.GetBytes(JsonSerializer.Serialize(LobbyManager.GetLobbies())));
+            ActiveConnections.ForEach(x => x.Dispose());
+        }
+
         private void GetSavedServerData() {
             string accountPath = $"{ServerPath}/ServerData/account.json";
             string lobbiesPath = $"{ServerPath}/ServerData/lobbies.json";
 
             if (File.Exists(accountPath)) {
-                AccountManager.Accounts = JsonSerializer.Deserialize<Dictionary<string, Account>>(Encoding.UTF8.GetString(File.ReadAllBytes(accountPath)));
+                AccountManager.Accounts = JsonSerializer.Deserialize<Dictionary<string, byte[]>>(Encoding.UTF8.GetString(File.ReadAllBytes(accountPath)));
             }
             if (File.Exists(lobbiesPath)) {
-                LobbyManager.SetLobbies(JsonSerializer.Deserialize<Dictionary<string, IChatroom>>(Encoding.UTF8.GetString(File.ReadAllBytes(lobbiesPath)));)
-            } 
+                LobbyManager.SetLobbies(JsonSerializer.Deserialize<Dictionary<string, PublicChatRoom>>(Encoding.UTF8.GetString(File.ReadAllBytes(lobbiesPath))));
+            }
         }
 
         public async Task UserConnectionManager() {

@@ -14,10 +14,6 @@ namespace SendableObjects {
             this.passwdHash = passwdHash;
             this.createAcount = createAcount;
         }
-
-        public static AccountLogIn CreateAccountLogIn(string name, string passwd) {
-            return new AccountLogIn(name, SHA512.HashData(Encoding.UTF8.GetBytes(passwd)));
-        }
     }
 
     public class SendMessage {

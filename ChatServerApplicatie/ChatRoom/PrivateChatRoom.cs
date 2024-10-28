@@ -8,20 +8,14 @@ using System.Threading.Tasks;
 namespace ChatServerApplicatie.Chatroom {
     internal class PrivateChatRoom : IChatroom {
         public string ChatRoomID { get; }
-        public ChatMessage[] RecentChatMessagesBuffer { get; set; } = new ChatMessage[50];
+        public List<ChatMessage> ChatMessages { get; } = new List<ChatMessage>();
 
-        public PrivateChatRoom(string ChatRoomID) {
-            this.ChatRoomID = ChatRoomID;
+        public PrivateChatRoom(string chatRoomId) {
+            ChatRoomID = chatRoomId;
         }
 
         public void AddMessage(ChatMessage message) {
-            ChatMessage[] newRecentChatMessagesBuffer = new ChatMessage[RecentChatMessagesBuffer.Length];
-
-            newRecentChatMessagesBuffer[0] = message;
-
-            Array.Copy(RecentChatMessagesBuffer, 0, newRecentChatMessagesBuffer, 1, RecentChatMessagesBuffer.Length - 1);
-            RecentChatMessagesBuffer = newRecentChatMessagesBuffer;
+            ChatMessages.Add(message);
         }
-
     }
 }
