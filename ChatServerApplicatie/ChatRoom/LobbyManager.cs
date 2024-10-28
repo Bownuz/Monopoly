@@ -10,6 +10,10 @@ namespace ChatServerApplicatie.ChatRoom {
     internal static class LobbyManager {
         private static Dictionary<string, IChatroom> lobbies = new Dictionary<string, IChatroom>();
 
+        public static Dictionary<string, IChatroom> GetLobbies() {
+            return lobbies;
+        }
+
         public static void SetLobbies(Dictionary<string, IChatroom> lobbydict) {
             lobbies = lobbydict;
         }

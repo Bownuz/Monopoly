@@ -26,6 +26,12 @@ namespace ChatServerApplicatie {
             GetSavedServerData();
         }
 
+        public void Shutdown() {
+            File.WriteAllBytes($"{ServerPath}/ServerData/account.json", Encoding.UTF8.GetBytes(JsonSerializer.Serialize(AccountManager.Accounts)));
+            File.WriteAllBytes($"{ServerPath}/ServerData/lobbies.json", Encoding.UTF8.GetBytes(JsonSerializer.Serialize(LobbyManager.GetLobbies())));
+            ActiveConnections.ForEach(x => x.Dispose());
+        }
+
         private void GetSavedServerData() {
             string accountPath = $"{ServerPath}/ServerData/account.json";
             string lobbiesPath = $"{ServerPath}/ServerData/lobbies.json";
