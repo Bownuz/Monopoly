@@ -4,6 +4,7 @@ using SendableObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace ChatServerApplicatie.ProtocolState {
     class Login : ProtocolState {
         public Login(DataProtocol dataProtocol) : base(dataProtocol) { }
 
-        public override string CheckUserInput(string input) {
+        public override string CheckUserInput(string input, Socket socket) {
             if (string.IsNullOrWhiteSpace(input)) {
                 return "Send userName";
             }
@@ -35,7 +36,7 @@ namespace ChatServerApplicatie.ProtocolState {
             if (!createAcount) {
                 if (AccountManager.Accounts.TryGetValue(userName, out var storedHash)) {
                     if (storedHash.SequenceEqual(passwordHash)) {
-                        protocol.ChangeState(new SearchLobby(protocol));
+                        protocol.ChangeState(new SearchLobby(protocol, userName));
                         return JsonSerializer.Serialize(LobbyManager.GetLobbyNames());
                     } else {
                         return "Username or password incorrect";
@@ -49,21 +50,24 @@ namespace ChatServerApplicatie.ProtocolState {
             }
 
             AccountManager.Accounts[userName] = passwordHash;
-            protocol.ChangeState(new SearchLobby(protocol));
+            protocol.ChangeState(new SearchLobby(protocol, userName));
             return JsonSerializer.Serialize(LobbyManager.GetLobbyNames());
         }
     }
 
     class SearchLobby : ProtocolState {
-        public SearchLobby(DataProtocol dataProtocol) : base(dataProtocol) {
+        private string userName;
+        public SearchLobby(DataProtocol dataProtocol, string userName) : base(dataProtocol) {
+            this.userName = userName;
         }
 
-        public override string CheckUserInput(string input) {
+        public override string CheckUserInput(string input, Socket socket) {
             if (input.StartsWith("Lobby:")) {
                 string lobbyName = input.Substring("Lobby:".Length).Trim();
 
                 var lobby = LobbyManager.GetOrCreateLobby(lobbyName);
-                protocol.ChangeState(new Chat(protocol, lobby));
+                LobbyManager.AddUserToLobby(lobbyName, userName);
+                protocol.ChangeState(new Chat(protocol, lobby, userName));
                 return "Lobby joined";
             }
             return "Lobby not found";
@@ -71,19 +75,27 @@ namespace ChatServerApplicatie.ProtocolState {
     }
     class Chat : ProtocolState {
         private IChatroom chatRoom;
-        public Chat(DataProtocol dataProtocol, IChatroom chatRoom) : base(dataProtocol) {
+        private string userName;
+        public Chat(DataProtocol dataProtocol, IChatroom chatRoom, string userName) : base(dataProtocol) {
             this.chatRoom = chatRoom;
+            this.userName = userName;
         }
 
-        public override string CheckUserInput(string input) {
+        public override async string CheckUserInput(string input, Socket socket) {
             if (input.StartsWith("Message:")) {
                 string messageText = input.Substring("Message:".Length).Trim();
                 var chatMessage = ChatMessage.Create("Client", Encoding.UTF8.GetBytes(messageText));
                 chatRoom.AddMessage(chatMessage);
 
+                List<Socket> userSockets = LobbyManager.get
+                foreach (var socket in userSockets) {
+                    await MessageCommunication.SendMessage(socket, messageText);
+                }
+
                 return $"New message in {chatRoom.ChatRoomID} from {chatMessage.Sender}: {messageText}";
             } else if (input.Equals("Go back")) {
-                protocol.ChangeState(new SearchLobby(protocol));
+                LobbyManager.RemoveUserFromLobby(chatRoom.ChatRoomID, userName);
+                protocol.ChangeState(new SearchLobby(protocol, userName));
                 return JsonSerializer.Serialize(LobbyManager.GetLobbyNames());
             }
             return null;
@@ -93,7 +105,7 @@ namespace ChatServerApplicatie.ProtocolState {
         public Exit(DataProtocol dataProtocol) : base(dataProtocol) {
         }
 
-        public override string CheckUserInput(string input) {
+        public override string CheckUserInput(string input, Socket socket) {
             return "Goodbye";
         }
     }

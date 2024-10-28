@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,8 +12,8 @@ namespace ChatServerApplicatie.ProtocolState {
         public DataProtocol() {
             this.state = new Login(this);
         }
-        public String processInput(String input) {
-            return state.CheckUserInput(input);
+        public String processInput(String input, Socket socket) {
+            return state.CheckUserInput(input, socket);
         }
 
         public void ChangeState(ProtocolState newState) {
