@@ -39,7 +39,6 @@ namespace ChatClientApplicatie.State {
             while (clientSocket.Connected) {
                 string receivedMessage = await MessageCommunication.Receivemessage(clientSocket);
                 if (receivedMessage != null) {
-                    NewMessage?.Invoke(receivedMessage);
                     string response = protocol.processInput(receivedMessage);
                     if (!string.IsNullOrEmpty(response)) {
                         await MessageCommunication.SendMessage(clientSocket, response);

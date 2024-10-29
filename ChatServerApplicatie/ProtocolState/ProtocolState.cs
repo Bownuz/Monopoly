@@ -86,10 +86,7 @@ namespace ChatServerApplicatie.ProtocolState {
 
         public override string CheckUserInput(string input, Socket socket) {
             if (input.StartsWith("Message:")) {
-                //JsonSerializer.Serialize(input.Substring("Message:".Length));
                 string messageText = input.Substring("Message:".Length).Trim();
-                //Console.WriteLine(JsonSerializer.Serialize("Hallo: " + messageText));
-                Console.WriteLine("Ja: " + messageText);
                 var chatMessage = ChatMessage.Create(userName, Encoding.UTF8.GetBytes(messageText));
                 chatRoom.AddMessage(chatMessage);
 
