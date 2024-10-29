@@ -68,7 +68,8 @@ namespace ChatClientApplicatie.State {
                     List<ChatMessage> messageList = JsonSerializer.Deserialize<List<ChatMessage>>(cleanedInput);
 
                     foreach (ChatMessage message in messageList) {
-                        handler.ReceiveMessage(message.Sender + ": " + Encoding.UTF8.GetString(message.Message));
+
+                        handler.ReceiveMessage(message.Sender + ": " + JsonDocument.Parse(message.Message).RootElement.GetProperty("message").ToString());
                         //JsonSerializer.Deserialize<List<ChatMessage>>(Encoding.UTF8.GetString(message.Message)));
                     }
                 }
