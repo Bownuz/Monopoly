@@ -27,19 +27,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\fedde\\.nuget\\packages\\": {}
+    "C:\\Users\\tieme\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\School\\Gitkraken\\Monopoly\\ChatServerApplicatie\\ChatServerApplicatie.csproj",
+      "projectUniqueName": "C:\\dev\\Monopoly\\ChatServerApplicatie\\ChatServerApplicatie.csproj",
       "projectName": "ChatServerApplicatie",
-      "projectPath": "D:\\School\\Gitkraken\\Monopoly\\ChatServerApplicatie\\ChatServerApplicatie.csproj",
-      "packagesPath": "C:\\Users\\fedde\\.nuget\\packages\\",
-      "outputPath": "D:\\School\\Gitkraken\\Monopoly\\ChatServerApplicatie\\obj\\",
+      "projectPath": "C:\\dev\\Monopoly\\ChatServerApplicatie\\ChatServerApplicatie.csproj",
+      "packagesPath": "C:\\Users\\tieme\\.nuget\\packages\\",
+      "outputPath": "C:\\dev\\Monopoly\\ChatServerApplicatie\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\fedde\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\tieme\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -53,8 +53,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\School\\Gitkraken\\Monopoly\\SendableObjects\\SendableObjects.csproj": {
-              "projectPath": "D:\\School\\Gitkraken\\Monopoly\\SendableObjects\\SendableObjects.csproj"
+            "C:\\dev\\Monopoly\\SendableObjects\\SendableObjects.csproj": {
+              "projectPath": "C:\\dev\\Monopoly\\SendableObjects\\SendableObjects.csproj"
             }
           }
         }
@@ -89,7 +89,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

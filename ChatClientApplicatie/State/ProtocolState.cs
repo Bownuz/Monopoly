@@ -40,12 +40,15 @@ namespace ChatClientApplicatie.State {
     }
 
     public class SearchLobby : State {
+        public static ChatScreen ChatScreen;
         public SearchLobby(DataProtocol protocol, Handler handler) : base(protocol, handler) {
         }
 
         public override string CheckInput(string input) {
             if (input.Equals("Lobby joined")) {
-                handler.ChangeScreen(new ChatScreen(handler));
+                ChatScreen newChatscreen = new ChatScreen(handler);
+                ChatScreen = newChatscreen;
+                handler.ChangeScreen(newChatscreen);
                 protocol.ChangeState(new Chat(protocol, handler));
             } else if (input.Equals("Lobby not found")) {
                 MessageBox.Show("Lobby not found");
@@ -60,10 +63,17 @@ namespace ChatClientApplicatie.State {
 
         public override string CheckInput(string input) {
             try {
-                List<ChatMessage> messageList = JsonSerializer.Deserialize<List<ChatMessage>>(input);
+                string pattern = @"\[\{.*?\}\]";
+                Match match = Regex.Match(input, pattern);
 
-                foreach (ChatMessage message in messageList) {
-                    handler.ReceiveMessage(message.Sender + ": " + JsonDocument.Parse(message.Message).RootElement.GetProperty("message").ToString());
+                if (match.Success) {
+                    string cleanedInput = match.Value;
+                    List<ChatMessage> messageList = JsonSerializer.Deserialize<List<ChatMessage>>(cleanedInput);
+                    SearchLobby.ChatScreen.ClearChatListBox();
+                    foreach (ChatMessage message in messageList) {
+
+                        handler.ReceiveMessage(message.Sender + ": " + JsonDocument.Parse(message.Message).RootElement.GetProperty("message").ToString());
+                    }
                 }
             }
             catch {

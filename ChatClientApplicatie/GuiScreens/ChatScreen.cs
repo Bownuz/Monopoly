@@ -20,6 +20,12 @@ namespace ChatClientApplicatie.GuiScreens {
             handler.NewMessage += OnNewMessageReceived;
         }
 
+        public void ClearChatListBox() {
+            ChatListBox.Invoke((MethodInvoker) delegate {
+                ChatListBox.Items.Clear();
+            });
+        }
+
         private void OnNewMessageReceived(string message) {
             ChatListBox.Invoke((MethodInvoker)delegate {
                 ChatListBox.Items.Add(message);
