@@ -20,6 +20,10 @@ namespace ChatServerApplicatie.ChatRoom {
             return lobbies.Keys.ToList();
         }
 
+        public static void ClearLobbies() {
+            lobbies.Clear();
+        }
+
         public static void AddUserToLobby(string lobbyName, string userName) {
             PublicChatRoom lobby = GetOrCreateLobby(lobbyName);
             lobby.AddMember(userName);

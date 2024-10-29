@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace ChatClientApplicatie.State {
     public class DataProtocol {
         private State state;
+        public State CurrentState => state;
 
         public DataProtocol(Handler handler) {
             this.state = new Login(this, handler);

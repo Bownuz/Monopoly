@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\dev\\Monopoly\\ChatServerApplicatie\\ChatServerApplicatie.csproj": {}
+    "D:\\School\\Gitkraken\\Monopoly\\ChatServerApplicatie\\ChatServerApplicatie.csproj": {}
   },
   "projects": {
-    "C:\\dev\\Monopoly\\ChatServerApplicatie\\ChatServerApplicatie.csproj": {
+    "D:\\School\\Gitkraken\\Monopoly\\ChatServerApplicatie\\ChatServerApplicatie.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\dev\\Monopoly\\ChatServerApplicatie\\ChatServerApplicatie.csproj",
+        "projectUniqueName": "D:\\School\\Gitkraken\\Monopoly\\ChatServerApplicatie\\ChatServerApplicatie.csproj",
         "projectName": "ChatServerApplicatie",
-        "projectPath": "C:\\dev\\Monopoly\\ChatServerApplicatie\\ChatServerApplicatie.csproj",
-        "packagesPath": "C:\\Users\\tieme\\.nuget\\packages\\",
-        "outputPath": "C:\\dev\\Monopoly\\ChatServerApplicatie\\obj\\",
+        "projectPath": "D:\\School\\Gitkraken\\Monopoly\\ChatServerApplicatie\\ChatServerApplicatie.csproj",
+        "packagesPath": "C:\\Users\\fedde\\.nuget\\packages\\",
+        "outputPath": "D:\\School\\Gitkraken\\Monopoly\\ChatServerApplicatie\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\tieme\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\fedde\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -28,8 +28,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\dev\\Monopoly\\SendableObjects\\SendableObjects.csproj": {
-                "projectPath": "C:\\dev\\Monopoly\\SendableObjects\\SendableObjects.csproj"
+              "D:\\School\\Gitkraken\\Monopoly\\SendableObjects\\SendableObjects.csproj": {
+                "projectPath": "D:\\School\\Gitkraken\\Monopoly\\SendableObjects\\SendableObjects.csproj"
               }
             }
           }
@@ -48,6 +48,20 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "MSTest.TestAdapter": {
+              "target": "Package",
+              "version": "[3.6.1, )"
+            },
+            "MSTest.TestFramework": {
+              "target": "Package",
+              "version": "[3.6.1, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.11.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -64,21 +78,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\dev\\Monopoly\\SendableObjects\\SendableObjects.csproj": {
+    "D:\\School\\Gitkraken\\Monopoly\\SendableObjects\\SendableObjects.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\dev\\Monopoly\\SendableObjects\\SendableObjects.csproj",
+        "projectUniqueName": "D:\\School\\Gitkraken\\Monopoly\\SendableObjects\\SendableObjects.csproj",
         "projectName": "SendableObjects",
-        "projectPath": "C:\\dev\\Monopoly\\SendableObjects\\SendableObjects.csproj",
-        "packagesPath": "C:\\Users\\tieme\\.nuget\\packages\\",
-        "outputPath": "C:\\dev\\Monopoly\\SendableObjects\\obj\\",
+        "projectPath": "D:\\School\\Gitkraken\\Monopoly\\SendableObjects\\SendableObjects.csproj",
+        "packagesPath": "C:\\Users\\fedde\\.nuget\\packages\\",
+        "outputPath": "D:\\School\\Gitkraken\\Monopoly\\SendableObjects\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\tieme\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\fedde\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -124,7 +138,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

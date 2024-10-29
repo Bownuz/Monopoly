@@ -63,17 +63,11 @@ namespace ChatClientApplicatie.State {
 
         public override string CheckInput(string input) {
             try {
-                string pattern = @"\[\{.*?\}\]";
-                Match match = Regex.Match(input, pattern);
+                List<ChatMessage> messageList = JsonSerializer.Deserialize<List<ChatMessage>>(input);
+                SearchLobby.ChatScreen.ClearChatListBox();
+                foreach (ChatMessage message in messageList) {
 
-                if (match.Success) {
-                    string cleanedInput = match.Value;
-                    List<ChatMessage> messageList = JsonSerializer.Deserialize<List<ChatMessage>>(cleanedInput);
-                    SearchLobby.ChatScreen.ClearChatListBox();
-                    foreach (ChatMessage message in messageList) {
-
-                        handler.ReceiveMessage(message.Sender + ": " + JsonDocument.Parse(message.Message).RootElement.GetProperty("message").ToString());
-                    }
+                    handler.ReceiveMessage(message.Sender + ": " + JsonDocument.Parse(message.Message).RootElement.GetProperty("message").ToString());
                 }
             }
             catch {

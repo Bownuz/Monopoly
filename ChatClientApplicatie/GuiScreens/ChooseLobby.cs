@@ -24,6 +24,22 @@ namespace ChatClientApplicatie {
             lobbyListBox.Items.Add("Private Chat 1");
         }
 
+        public void CreateLobbyButton_Click() {
+            var lobbyName = CreateLobbyTextBox.Text;
+            if (!string.IsNullOrWhiteSpace(lobbyName)) {
+                handler.UpdateLobbyInfo(lobbyName);
+                UpdateLobbyList(new List<string> { lobbyName });
+            }
+        }
+
+        public List<string> GetLobbyList() {
+            return lobbyListBox.Items.Cast<string>().ToList();
+        }
+
+        public string GetCreateLobbyText() {
+            return CreateLobbyTextBox.Text;
+        }
+
         private void CreateLobbyButton_Click_1(object sender, EventArgs e) {
             string newLobbyName = CreateLobbyTextBox.Text.Trim();
             if (!string.IsNullOrWhiteSpace(newLobbyName)) {

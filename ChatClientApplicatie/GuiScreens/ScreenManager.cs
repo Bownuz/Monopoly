@@ -3,6 +3,7 @@
 namespace ChatClientApplicatie.GuiScreens {
     public class ScreenManager {
         private Form mainForm;
+        public Form CurrentmainForm => mainForm;
 
         public ScreenManager(Form form) {
             this.mainForm = form;

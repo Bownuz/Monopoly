@@ -34,6 +34,10 @@ namespace ChatClientApplicatie.GuiScreens {
             });
         }
 
+        public List<string> GetChatMessages() {
+            return ChatListBox.Items.Cast<string>().ToList();
+        }
+
         private void SendButton_Click(object sender, EventArgs e) {
             string message = MessageTextBox.Text.Trim();
             if (!string.IsNullOrWhiteSpace(message)) {

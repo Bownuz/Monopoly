@@ -9,6 +9,8 @@ namespace ChatServerApplicatie.ProtocolState {
     public class DataProtocol {
         private ProtocolState state;
 
+        public ProtocolState CurrentState => state;
+
         public DataProtocol() {
             this.state = new Login(this);
         }
